@@ -1,3 +1,5 @@
+import 'package:booking/src/core/services/auth/models/sign_up_request.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_response.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:booking/src/core/services/auth/models/sign_in_response.dart';
 
@@ -12,6 +14,9 @@ import '../../../../core/services/auth/models/update_password_response.dart';
 abstract class IAuthRepository {
   Future<Either<DomainException, SignInResponse>> loginUser(
     SignInRequest body,
+  );
+  Future<Either<DomainException, SignUpResponse>> register(
+    SignUpRequest body,
   );
   Future<Either<DomainException, VerifyResponse>> verifyUser(
     VerifyRequest body,

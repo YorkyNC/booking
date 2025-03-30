@@ -1,9 +1,11 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:injectable/injectable.dart';
 import 'package:booking/src/core/services/auth/entities/user_entity.dart';
 import 'package:booking/src/core/services/auth/models/sign_in_response.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_request.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_response.dart';
 import 'package:booking/src/core/services/auth/models/update_password_request.dart';
 import 'package:booking/src/core/services/auth/models/update_password_response.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/exceptions/domain_exception.dart';
 import '../../../../core/services/auth/auth_service_impl.dart';
@@ -25,6 +27,21 @@ class AuthRepositoryImpl implements IAuthRepository {
   Future<Either<DomainException, SignInResponse>> loginUser(SignInRequest body) async {
     try {
       final requests = await _authService.loginUser(body);
+      return requests.fold(
+        (error) {
+          return Left(error);
+        },
+        (response) => Right(response),
+      );
+    } catch (e) {
+      return Left(UnknownException(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<DomainException, SignUpResponse>> register(SignUpRequest body) async {
+    try {
+      final requests = await _authService.register(body);
       return requests.fold(
         (error) {
           return Left(error);

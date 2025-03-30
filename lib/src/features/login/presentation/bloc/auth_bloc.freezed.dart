@@ -19,6 +19,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -29,6 +32,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -39,6 +45,9 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -50,6 +59,7 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -60,6 +70,7 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -70,6 +81,7 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -179,6 +191,9 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -192,6 +207,9 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -205,6 +223,9 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -222,6 +243,7 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -235,6 +257,7 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -248,6 +271,7 @@ class _$LoginImpl implements _Login {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -274,6 +298,238 @@ abstract class _Login implements AuthEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginImplCopyWith<_$LoginImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RegisterImplCopyWith<$Res> {
+  factory _$$RegisterImplCopyWith(
+          _$RegisterImpl value, $Res Function(_$RegisterImpl) then) =
+      __$$RegisterImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String firstName,
+      String lastName,
+      String email,
+      String username,
+      String password});
+}
+
+/// @nodoc
+class __$$RegisterImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$RegisterImpl>
+    implements _$$RegisterImplCopyWith<$Res> {
+  __$$RegisterImplCopyWithImpl(
+      _$RegisterImpl _value, $Res Function(_$RegisterImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? email = null,
+    Object? username = null,
+    Object? password = null,
+  }) {
+    return _then(_$RegisterImpl(
+      firstName: null == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RegisterImpl implements _Register {
+  const _$RegisterImpl(
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.username,
+      required this.password});
+
+  @override
+  final String firstName;
+  @override
+  final String lastName;
+  @override
+  final String email;
+  @override
+  final String username;
+  @override
+  final String password;
+
+  @override
+  String toString() {
+    return 'AuthEvent.register(firstName: $firstName, lastName: $lastName, email: $email, username: $username, password: $password)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RegisterImpl &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.password, password) ||
+                other.password == password));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, firstName, lastName, email, username, password);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RegisterImplCopyWith<_$RegisterImpl> get copyWith =>
+      __$$RegisterImplCopyWithImpl<_$RegisterImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
+    required TResult Function() getUser,
+    required TResult Function() refreshToken,
+    required TResult Function(String usernameOrEmail) forgotPassword,
+    required TResult Function(String newPassword) updatePassword,
+    required TResult Function(String code, String userId) verify,
+  }) {
+    return register(firstName, lastName, email, username, password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
+    TResult? Function()? getUser,
+    TResult? Function()? refreshToken,
+    TResult? Function(String usernameOrEmail)? forgotPassword,
+    TResult? Function(String newPassword)? updatePassword,
+    TResult? Function(String code, String userId)? verify,
+  }) {
+    return register?.call(firstName, lastName, email, username, password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
+    TResult Function()? getUser,
+    TResult Function()? refreshToken,
+    TResult Function(String usernameOrEmail)? forgotPassword,
+    TResult Function(String newPassword)? updatePassword,
+    TResult Function(String code, String userId)? verify,
+    required TResult orElse(),
+  }) {
+    if (register != null) {
+      return register(firstName, lastName, email, username, password);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
+    required TResult Function(_GetUser value) getUser,
+    required TResult Function(_RefreshToken value) refreshToken,
+    required TResult Function(_ForgotPassword value) forgotPassword,
+    required TResult Function(_UpdatePassword value) updatePassword,
+    required TResult Function(_Verify value) verify,
+  }) {
+    return register(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
+    TResult? Function(_GetUser value)? getUser,
+    TResult? Function(_RefreshToken value)? refreshToken,
+    TResult? Function(_ForgotPassword value)? forgotPassword,
+    TResult? Function(_UpdatePassword value)? updatePassword,
+    TResult? Function(_Verify value)? verify,
+  }) {
+    return register?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
+    TResult Function(_GetUser value)? getUser,
+    TResult Function(_RefreshToken value)? refreshToken,
+    TResult Function(_ForgotPassword value)? forgotPassword,
+    TResult Function(_UpdatePassword value)? updatePassword,
+    TResult Function(_Verify value)? verify,
+    required TResult orElse(),
+  }) {
+    if (register != null) {
+      return register(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Register implements AuthEvent {
+  const factory _Register(
+      {required final String firstName,
+      required final String lastName,
+      required final String email,
+      required final String username,
+      required final String password}) = _$RegisterImpl;
+
+  String get firstName;
+  String get lastName;
+  String get email;
+  String get username;
+  String get password;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RegisterImplCopyWith<_$RegisterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -319,6 +575,9 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -332,6 +591,9 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -345,6 +607,9 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -362,6 +627,7 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -375,6 +641,7 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -388,6 +655,7 @@ class _$GetUserImpl implements _GetUser {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -448,6 +716,9 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -461,6 +732,9 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -474,6 +748,9 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -491,6 +768,7 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -504,6 +782,7 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -517,6 +796,7 @@ class _$RefreshTokenImpl implements _RefreshToken {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -606,6 +886,9 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -619,6 +902,9 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -632,6 +918,9 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -649,6 +938,7 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -662,6 +952,7 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -675,6 +966,7 @@ class _$ForgotPasswordImpl implements _ForgotPassword {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -773,6 +1065,9 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -786,6 +1081,9 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -799,6 +1097,9 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -816,6 +1117,7 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -829,6 +1131,7 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -842,6 +1145,7 @@ class _$UpdatePasswordImpl implements _UpdatePassword {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,
@@ -946,6 +1250,9 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String username, String password) login,
+    required TResult Function(String firstName, String lastName, String email,
+            String username, String password)
+        register,
     required TResult Function() getUser,
     required TResult Function() refreshToken,
     required TResult Function(String usernameOrEmail) forgotPassword,
@@ -959,6 +1266,9 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String username, String password)? login,
+    TResult? Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult? Function()? getUser,
     TResult? Function()? refreshToken,
     TResult? Function(String usernameOrEmail)? forgotPassword,
@@ -972,6 +1282,9 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String username, String password)? login,
+    TResult Function(String firstName, String lastName, String email,
+            String username, String password)?
+        register,
     TResult Function()? getUser,
     TResult Function()? refreshToken,
     TResult Function(String usernameOrEmail)? forgotPassword,
@@ -989,6 +1302,7 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Register value) register,
     required TResult Function(_GetUser value) getUser,
     required TResult Function(_RefreshToken value) refreshToken,
     required TResult Function(_ForgotPassword value) forgotPassword,
@@ -1002,6 +1316,7 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Register value)? register,
     TResult? Function(_GetUser value)? getUser,
     TResult? Function(_RefreshToken value)? refreshToken,
     TResult? Function(_ForgotPassword value)? forgotPassword,
@@ -1015,6 +1330,7 @@ class _$VerifyImpl implements _Verify {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Register value)? register,
     TResult Function(_GetUser value)? getUser,
     TResult Function(_RefreshToken value)? refreshToken,
     TResult Function(_ForgotPassword value)? forgotPassword,

@@ -1,3 +1,6 @@
+import 'package:booking/src/core/services/auth/entities/sign_in_response_entity.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_request.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_response.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:booking/src/core/services/auth/entities/user_entity.dart';
 import 'package:booking/src/core/services/auth/models/sign_in_response.dart';
@@ -23,4 +26,6 @@ abstract class IAuthService {
   Future<Either<DomainException, ForgotPasswordResponse>> forgotPassword(ForgotPasswordRequest request);
 
   Future<Either<DomainException, UpdatePasswordResponse>> updatePassword(UpdatePasswordRequest request);
+
+  Future<Either<DomainException, SignUpResponse>> register(SignUpRequest request);
 }

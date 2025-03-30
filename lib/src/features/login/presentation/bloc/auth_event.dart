@@ -6,6 +6,13 @@ class AuthEvent with _$AuthEvent {
     required String username,
     required String password,
   }) = _Login;
+  const factory AuthEvent.register({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String username,
+    required String password,
+  }) = _Register;
 
   const factory AuthEvent.getUser() = _GetUser;
 
@@ -19,6 +26,5 @@ class AuthEvent with _$AuthEvent {
     required String newPassword,
   }) = _UpdatePassword;
 
-  const factory AuthEvent.verify(
-      {required String code, required String userId}) = _Verify;
+  const factory AuthEvent.verify({required String code, required String userId}) = _Verify;
 }

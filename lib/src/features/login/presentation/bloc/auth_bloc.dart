@@ -4,9 +4,11 @@ import 'package:booking/main_prod.dart';
 import 'package:booking/src/core/services/auth/entities/user_entity.dart';
 import 'package:booking/src/core/services/auth/models/forgot_password_response.dart';
 import 'package:booking/src/core/services/auth/models/refresh_token_response.dart';
+import 'package:booking/src/core/services/auth/models/sign_up_request.dart';
 import 'package:booking/src/core/services/auth/models/update_password_request.dart';
 import 'package:booking/src/core/services/auth/models/update_password_response.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
+import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -34,6 +36,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     this._forgotPasswordUseCase,
     this._updatePasswordUseCase,
     this._refreshTokenUseCase,
+    this._registerUseCase,
   ) : super(const _Initial());
 
   final LoginUseCase _loginUseCase;
@@ -42,6 +45,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   final ForgotPasswordUseCase _forgotPasswordUseCase;
   final UpdatePasswordUseCase _updatePasswordUseCase;
   final RefreshTokenUseCase _refreshTokenUseCase;
+  final RegisterUseCase _registerUseCase;
 
   final AuthStateViewModel _viewModel = const AuthStateViewModel();
 
@@ -64,6 +68,17 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       ),
       login: (username, password) => _login(
         event as _Login,
+        emit as Emitter<AuthState>,
+      ),
+      register: (
+        username,
+        password,
+        email,
+        firstName,
+        lastName,
+      ) =>
+          _register(
+        event as _Register,
         emit as Emitter<AuthState>,
       ),
       verify: (_, __) => _verify(
@@ -92,6 +107,44 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         await st.setRefreshToken(result.data!.refreshToken);
       } catch (e) {
         debugPrint('Error during login token operations: $e');
+      }
+
+      return emit(
+        AuthState.loaded(
+          viewModel: _viewModel.copyWith(
+            token: result.data!.accessToken,
+            refreshToken: result.data!.refreshToken,
+          ),
+        ),
+      );
+    }
+
+    return emit(
+      const AuthState.error('Введенные данные неверны, попробуйте снова'),
+    );
+  }
+
+  Future<void> _register(_Register event, Emitter<AuthState> emit) async {
+    emit(const _Loading());
+
+    final SignUpRequest request = SignUpRequest(
+      email: event.username,
+      password: event.password,
+      firstName: event.firstName,
+      lastName: event.lastName,
+      userName: event.username,
+    );
+    final result = await _registerUseCase.call(request);
+
+    log(result.toString());
+
+    if (result.isSuccessful) {
+      try {
+        // Store tokens first
+        await st.setToken(result.data!.accessToken);
+        await st.setRefreshToken(result.data!.refreshToken);
+      } catch (e) {
+        debugPrint('Error during register token operations: $e');
       }
 
       return emit(

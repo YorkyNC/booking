@@ -9,6 +9,7 @@ import 'package:booking/src/features/login/presentation/components/email_text_fo
 import 'package:booking/src/features/login/presentation/components/login_app_bar.dart';
 import 'package:booking/src/features/login/presentation/components/password_text_form_field.dart';
 import 'package:booking/src/features/login/presentation/custom_snack_bar.dart';
+import 'package:booking/src/features/register/presentation/register_success_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/services/injectable/injectable_service.dart';
@@ -80,6 +81,21 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  void _redirectToHome(String token, String refreshToken) {
+    storageService.setToken(token);
+    storageService.setRefreshToken(refreshToken);
+
+    Log.e(token);
+    Log.e(storageService.getRefreshToken()!);
+    RegisterSuccessDialog.show(
+      context,
+      onRedirect: () {
+        Navigator.of(context).pop();
+        context.pushReplacement(RoutePaths.studentMain);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseBlocWidget<AuthBloc, AuthEvent, AuthState>(
@@ -104,17 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
           },
           loaded: (viewModel) {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              CustomSnackBar.show(title: 'Successfully registered', seconds: 3, context: context),
-            );
-
-            storageService.setToken(viewModel.token);
-            storageService.setRefreshToken(viewModel.refreshToken);
-
-            Log.e(viewModel.token);
-            Log.e(storageService.getRefreshToken()!);
-
-            context.pushReplacement(RoutePaths.studentMain);
+            _redirectToHome(viewModel.token, viewModel.refreshToken);
           },
         );
       },
@@ -280,6 +286,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: context.colors.buttonColor,
+                                    foregroundColor: context.colors.white,
+                                    disabledBackgroundColor: context.colors.gray300,
+                                    padding: const EdgeInsets.all(12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
                                   onPressed: _formIsValid
                                       ? () {
                                           if (_formKey.currentState!.validate()) {
@@ -287,13 +302,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                               _confirmPasswordErrorText = 'Passwords do not match';
                                             });
 
-                                            // authBloc.add(
-                                            //   AuthEvent.register(
-                                            //     name: _nameController.text,
-                                            //     email: _emailController.text,
-                                            //     password: _passwordController.text,
-                                            //   ),
-                                            // );
+                                            String email = _emailController.text.trim();
+
+                                            authBloc.add(
+                                              AuthEvent.register(
+                                                email: email,
+                                                password: _passwordController.text,
+                                                firstName: _nameController.text,
+                                                lastName: '',
+                                                username: email,
+                                              ),
+                                            );
                                             ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar.show(
                                                 title: 'Please wait...', seconds: 1, context: context));
                                           } else {

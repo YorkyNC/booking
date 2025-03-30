@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
@@ -171,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                    text: '???',
+                                    text: 'Don’t have an account?',
                                     style: context.typography.textmdMedium.copyWith(
                                       color: context.colors.gray400,
                                     )),

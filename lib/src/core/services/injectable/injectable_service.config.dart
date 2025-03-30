@@ -55,6 +55,8 @@ import 'package:booking/src/features/login/domain/usecases/login_use_case.dart'
     as _i785;
 import 'package:booking/src/features/login/domain/usecases/refresh_token_use_case.dart'
     as _i134;
+import 'package:booking/src/features/login/domain/usecases/register_use_case.dart'
+    as _i676;
 import 'package:booking/src/features/login/domain/usecases/update_password_use_case.dart'
     as _i666;
 import 'package:booking/src/features/login/domain/usecases/verify_user_case.dart'
@@ -158,6 +160,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i20.ForgotPasswordUseCase>(() =>
         _i20.ForgotPasswordUseCase(
             gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
+    gh.lazySingleton<_i676.RegisterUseCase>(() => _i676.RegisterUseCase(
+        gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
     return this;
   }
 }

@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:booking/src/core/api/websocket/web_socket_service.dart';
 import 'package:booking/src/core/services/auth/i_auth_service.dart';
 import 'package:booking/src/core/services/injectable/service_register_proxy.dart';
 import 'package:booking/src/core/services/storage/storage_service.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
+import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
+import 'package:dio/dio.dart';
 
 import '../../../features/login/domain/usecases/forgot_password_use_case.dart';
 import '../../../features/login/domain/usecases/get_user_use_case.dart';
@@ -78,6 +79,7 @@ void manualRegisterServices() {
       getIt<ForgotPasswordUseCase>(),
       getIt<UpdatePasswordUseCase>(),
       getIt<RefreshTokenUseCase>(),
+      getIt<RegisterUseCase>(),
     ),
   );
 

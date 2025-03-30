@@ -14,7 +14,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Controllers for form fields
-  final TextEditingController _nameController = TextEditingController(text: 'Marbik');
+  final TextEditingController _nameController = TextEditingController(text: 'Yerassyl');
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController(text: 'beimbet.m04@gmail.com');
   final TextEditingController _passwordController = TextEditingController(text: '12r"hdhhie83%v@_');

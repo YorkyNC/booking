@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
@@ -5,6 +7,7 @@ import 'package:booking/src/core/router/router.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
 import 'package:booking/src/core/utils/loggers/logger.dart';
 import 'package:booking/src/features/login/presentation/components/login_app_bar.dart';
+import 'package:booking/src/features/login/presentation/components/login_success_dialog.dart';
 import 'package:booking/src/features/login/presentation/components/password_text_form_field.dart';
 import 'package:booking/src/features/login/presentation/custom_snack_bar.dart';
 import 'package:flutter/gestures.dart';
@@ -34,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _formIsValid = false;
 
-  String _passwordErrorText = 'Пожалуйста, введите пароль';
+  String _passwordErrorText = 'Please enter password';
 
   final _formKey = GlobalKey<FormState>();
 
@@ -62,12 +65,27 @@ class _LoginPageState extends State<LoginPage> {
     final emailValid = _emailController.text.isNotEmpty;
     final passwordValid = _passwordController.text.isNotEmpty;
 
-    // Only update state if the validity changed
     if (_formIsValid != (emailValid && passwordValid)) {
       setState(() {
         _formIsValid = emailValid && passwordValid;
       });
     }
+  }
+
+  void _redirectToHome(String token, String refreshToken) {
+    storageService.setToken(token);
+    storageService.setRefreshToken(refreshToken);
+
+    Log.e(token);
+    Log.e(storageService.getRefreshToken()!);
+
+    LoginSuccessDialog.show(
+      context,
+      onRedirect: () {
+        Navigator.of(context).pop();
+        context.pushReplacement(RoutePaths.studentMain);
+      },
+    );
   }
 
   @override
@@ -93,17 +111,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           loaded: (viewModel) {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              CustomSnackBar.show(title: 'Успешно вошли в систему', seconds: 3, context: context),
-            );
-
-            storageService.setToken(viewModel.token);
-            storageService.setRefreshToken(viewModel.refreshToken);
-
-            Log.e(viewModel.token);
-            Log.e(storageService.getRefreshToken()!);
-
-            context.pushReplacement(RoutePaths.studentMain);
+            _redirectToHome(viewModel.token, viewModel.refreshToken);
           },
         );
       },
@@ -119,6 +127,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 8,
+                  horizontal: 16,
                 ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -141,12 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        const SizedBox(height: 6),
                         EmailTextFormField(
                           emailController: _emailController,
                         ),
-                        const SizedBox(height: 12),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 18),
                         PasswordTextFormField(
                           passwordController: _passwordController,
                           isPasswordVisible: _isPasswordVisible,
@@ -164,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                    text: 'Don’t have an account?',
+                                    text: '???',
                                     style: context.typography.textmdMedium.copyWith(
                                       color: context.colors.gray400,
                                     )),
@@ -191,32 +198,41 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                  // formKey: _formKey,
-                                  onPressed: _formIsValid
-                                      ? () {
-                                          if (_formKey.currentState!.validate()) {
-                                            setState(() {
-                                              _passwordErrorText = 'Неверный логин или пароль';
-                                            });
-                                            authBloc.add(
-                                              AuthEvent.login(
-                                                username: _emailController.text,
-                                                password: _passwordController.text,
-                                              ),
-                                            );
-                                            ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar.show(
-                                                title: 'Пожалуйста, подождите...', seconds: 1, context: context));
-                                          } else {
-                                            setState(() {
-                                              _passwordErrorText = 'Пожалуйста, введите пароль';
-                                            });
-                                          }
+                                onPressed: _formIsValid
+                                    ? () {
+                                        if (_formKey.currentState!.validate()) {
+                                          setState(() {
+                                            _passwordErrorText = 'Invalid login or password';
+                                          });
+                                          authBloc.add(
+                                            AuthEvent.login(
+                                              username: _emailController.text,
+                                              password: _passwordController.text,
+                                            ),
+                                          );
+                                          ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar.show(
+                                              title: 'Please wait...', seconds: 1, context: context));
+                                        } else {
+                                          setState(() {
+                                            _passwordErrorText = 'Please enter password';
+                                          });
                                         }
-                                      : null,
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text('Continue'),
-                                  )),
+                                      }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: context.colors.buttonColor,
+                                  foregroundColor: context.colors.white,
+                                  disabledBackgroundColor: context.colors.gray300,
+                                  padding: const EdgeInsets.all(12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Login'),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -283,44 +299,9 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        // const SizedBox(height: 16),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Material(
-                        //         color: Colors.transparent,
-                        //         child: Ink(
-                        //           decoration: BoxDecoration(
-                        //             color: context.colors.card04Light,
-                        //             borderRadius: BorderRadius.circular(12),
-                        //           ),
-                        //           child: InkWell(
-                        //             borderRadius: BorderRadius.circular(12),
-                        //             onTap: () {
-                        //               print('tapped');
-                        //             },
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(14.0),
-                        //               child: Row(
-                        //                 mainAxisAlignment: MainAxisAlignment.center,
-                        //                 children: [
-                        //                   SvgPicture.asset(context.assetImages.vector),
-                        //                   const SizedBox(width: 8),
-                        //                   const Text(
-                        //                     'Continue with Google',
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                         const SizedBox(height: 40),
                         Text(
-                          'By continuing I agree with Privacy Policyand Terms & Conditions',
+                          'By continuing I agree with Privacy Policy and Terms & Conditions',
                           style: context.typography.textmdRegular.copyWith(
                             color: context.colors.gray400,
                           ),

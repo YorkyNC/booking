@@ -453,6 +453,16 @@ List<RouteBase> _routes = [
     },
   ),
   GoRoute(
+    name: RouteNames.register,
+    path: RoutePaths.register,
+    pageBuilder: (context, state) {
+      return getPage(
+        child: const RegisterPage(),
+        state: state,
+      );
+    },
+  ),
+  GoRoute(
       name: RouteNames.setNewPassword,
       path: RoutePaths.setNewPassword,
       pageBuilder: (context, state) {

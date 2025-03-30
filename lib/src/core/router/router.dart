@@ -26,6 +26,7 @@ import 'package:booking/src/features/feedback/presentation/pages/feedback_wrappe
 import 'package:booking/src/features/history/presentation/booking_history_page.dart';
 import 'package:booking/src/features/initial/presentation/welcome_page.dart';
 import 'package:booking/src/features/profile_page/presentation/profile_page.dart';
+import 'package:booking/src/features/register/presentation/register_page.dart';
 import 'package:booking/src/features/schedule/presentation/components/schedule_calendar.dart';
 import 'package:booking/src/features/schedule/presentation/components/schedule_editing_view.dart';
 import 'package:booking/src/features/schedule/presentation/teacher_schedule_page.dart';
@@ -60,6 +61,7 @@ GoRouter routerProvider() {
   return GoRouter(
     refreshListenable: st,
     initialLocation: token == null ? RoutePaths.welcome : '/',
+    // initialLocation: RoutePaths.profile,
     debugLogDiagnostics: true,
     routes: _routes,
   );

@@ -9,6 +9,7 @@ class RouteNames {
   static const String setNewPassword = 'set-new-password';
   static const String changePassword = 'change-password';
   static const String updatePassword = 'update-password';
+  static const String register = 'register';
   static const String settings = 'settings';
   static const String insights = 'insights';
   static const String insightStory = 'insight-story';

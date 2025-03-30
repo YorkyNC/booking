@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:booking/main_prod.dart';
 import 'package:booking/src/core/services/auth/entities/user_entity.dart';
 import 'package:booking/src/core/services/auth/models/forgot_password_response.dart';
@@ -9,6 +7,8 @@ import 'package:booking/src/core/services/auth/models/refresh_token_response.dar
 import 'package:booking/src/core/services/auth/models/update_password_request.dart';
 import 'package:booking/src/core/services/auth/models/update_password_response.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/base/base_bloc/bloc/base_bloc.dart';
 import '../../../../core/base/base_usecase/result.dart';
@@ -80,7 +80,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   Future<void> _login(_Login event, Emitter<AuthState> emit) async {
     emit(const _Loading());
 
-    final SignInRequest request = SignInRequest(username: event.username, password: event.password);
+    final SignInRequest request = SignInRequest(email: event.username, password: event.password);
     final result = await _loginUseCase.call(request);
 
     log(result.toString());
@@ -88,8 +88,8 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     if (result.isSuccessful) {
       try {
         // Store tokens first
-        await st.setToken(result.data!.data.accessToken);
-        await st.setRefreshToken(result.data!.data.refreshToken);
+        await st.setToken(result.data!.accessToken);
+        await st.setRefreshToken(result.data!.refreshToken);
       } catch (e) {
         debugPrint('Error during login token operations: $e');
       }
@@ -97,8 +97,8 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       return emit(
         AuthState.loaded(
           viewModel: _viewModel.copyWith(
-            token: result.data!.data.accessToken,
-            refreshToken: result.data!.data.refreshToken,
+            token: result.data!.accessToken,
+            refreshToken: result.data!.refreshToken,
           ),
         ),
       );

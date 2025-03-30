@@ -20,9 +20,8 @@ SignInResponse _$SignInResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SignInResponse {
-  String get status => throw _privateConstructorUsedError;
-  Map<String, dynamic> get meta => throw _privateConstructorUsedError;
-  TokenResponse get data => throw _privateConstructorUsedError;
+  String get accessToken => throw _privateConstructorUsedError;
+  String get refreshToken => throw _privateConstructorUsedError;
 
   /// Serializes this SignInResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,9 +39,7 @@ abstract class $SignInResponseCopyWith<$Res> {
           SignInResponse value, $Res Function(SignInResponse) then) =
       _$SignInResponseCopyWithImpl<$Res, SignInResponse>;
   @useResult
-  $Res call({String status, Map<String, dynamic> meta, TokenResponse data});
-
-  $TokenResponseCopyWith<$Res> get data;
+  $Res call({String accessToken, String refreshToken});
 }
 
 /// @nodoc
@@ -60,34 +57,19 @@ class _$SignInResponseCopyWithImpl<$Res, $Val extends SignInResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = null,
-    Object? meta = null,
-    Object? data = null,
+    Object? accessToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_value.copyWith(
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
               as String,
-      meta: null == meta
-          ? _value.meta
-          : meta // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as TokenResponse,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
-  }
-
-  /// Create a copy of SignInResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TokenResponseCopyWith<$Res> get data {
-    return $TokenResponseCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -99,10 +81,7 @@ abstract class _$$SignInResponseImplCopyWith<$Res>
       __$$SignInResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String status, Map<String, dynamic> meta, TokenResponse data});
-
-  @override
-  $TokenResponseCopyWith<$Res> get data;
+  $Res call({String accessToken, String refreshToken});
 }
 
 /// @nodoc
@@ -118,23 +97,18 @@ class __$$SignInResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? status = null,
-    Object? meta = null,
-    Object? data = null,
+    Object? accessToken = null,
+    Object? refreshToken = null,
   }) {
     return _then(_$SignInResponseImpl(
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
               as String,
-      meta: null == meta
-          ? _value._meta
-          : meta // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as TokenResponse,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -143,30 +117,19 @@ class __$$SignInResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SignInResponseImpl implements _SignInResponse {
   const _$SignInResponseImpl(
-      {required this.status,
-      required final Map<String, dynamic> meta,
-      required this.data})
-      : _meta = meta;
+      {required this.accessToken, required this.refreshToken});
 
   factory _$SignInResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignInResponseImplFromJson(json);
 
   @override
-  final String status;
-  final Map<String, dynamic> _meta;
+  final String accessToken;
   @override
-  Map<String, dynamic> get meta {
-    if (_meta is EqualUnmodifiableMapView) return _meta;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_meta);
-  }
-
-  @override
-  final TokenResponse data;
+  final String refreshToken;
 
   @override
   String toString() {
-    return 'SignInResponse(status: $status, meta: $meta, data: $data)';
+    return 'SignInResponse(accessToken: $accessToken, refreshToken: $refreshToken)';
   }
 
   @override
@@ -174,15 +137,15 @@ class _$SignInResponseImpl implements _SignInResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SignInResponseImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            const DeepCollectionEquality().equals(other._meta, _meta) &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.accessToken, accessToken) ||
+                other.accessToken == accessToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, status, const DeepCollectionEquality().hash(_meta), data);
+  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
 
   /// Create a copy of SignInResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -203,19 +166,16 @@ class _$SignInResponseImpl implements _SignInResponse {
 
 abstract class _SignInResponse implements SignInResponse {
   const factory _SignInResponse(
-      {required final String status,
-      required final Map<String, dynamic> meta,
-      required final TokenResponse data}) = _$SignInResponseImpl;
+      {required final String accessToken,
+      required final String refreshToken}) = _$SignInResponseImpl;
 
   factory _SignInResponse.fromJson(Map<String, dynamic> json) =
       _$SignInResponseImpl.fromJson;
 
   @override
-  String get status;
+  String get accessToken;
   @override
-  Map<String, dynamic> get meta;
-  @override
-  TokenResponse get data;
+  String get refreshToken;
 
   /// Create a copy of SignInResponse
   /// with the given fields replaced by the non-null parameter values.

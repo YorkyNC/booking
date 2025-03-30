@@ -1,10 +1,10 @@
 class EndPoints {
-  static const String baseUrl = 'https://vision.greeneye.kz/api';
+  static const String baseUrl = 'http://45.136.56.65:8000/api';
   // static const String baseUrl =
   //     'http://ae2409f46cbdd4b629bfcefff587fe39-631939517.me-central-1.elb.amazonaws.com/api';
   // Auth
   static const register = "/v1/auth/register";
-  static const login = "/v1.0/mobile/login";
+  static const login = "/v1/auth/authentication";
   static const logout = "/v1/auth/logout";
   static const verify = "/v1/auth/verify";
   static const refreshToken = "/v1/auth/refresh-token";

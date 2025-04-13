@@ -1,7 +1,7 @@
+import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/features/history/domain/enum/booking_status.dart';
 import 'package:booking/src/features/history/presentation/components/booking_card.dart';
-import 'package:flutter/material.dart';
 
 class BookingHistoryPage extends StatelessWidget {
   const BookingHistoryPage({Key? key}) : super(key: key);
@@ -14,13 +14,18 @@ class BookingHistoryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => context.pop(),
+        ),
         backgroundColor: Colors.grey.shade100,
         title: Text(
           context.loc.bookingHistory,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
+          style: context.typography.displayxsSemibold.copyWith(
+            color: context.colors.black,
           ),
         ),
         centerTitle: true,

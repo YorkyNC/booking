@@ -1,9 +1,9 @@
+import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
+import 'package:booking/src/core/router/router.dart';
 import 'package:booking/src/features/history/domain/enum/booking_status.dart';
-import 'package:booking/src/features/history/presentation/booking_history_page.dart';
 import 'package:booking/src/features/history/presentation/components/booking_card.dart';
 import 'package:booking/src/features/student/presentation/components/common_container.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -178,22 +178,43 @@ class StudentMainPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                CommonContainer(
-                  color: const Color(0xff5636B5),
-                  title: 'Make a place reservation',
-                  path: context.assetImages.a1Vector,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    context.push(RoutePaths.booking);
+                  },
+                  child: CommonContainer(
+                    color: const Color(0xff5636B5),
+                    title: 'Make a place reservation',
+                    path: context.assetImages.a1Vector,
+                  ),
                 ),
                 const SizedBox(height: 14),
-                CommonContainer(
-                  color: const Color(0xff35C1D6),
-                  title: 'Check my bookings',
-                  path: context.assetImages.a2Vector,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    context.push(RoutePaths.history);
+                  },
+                  child: CommonContainer(
+                    color: const Color(0xff35C1D6),
+                    title: 'Check my bookings',
+                    path: context.assetImages.a2Vector,
+                  ),
                 ),
                 const SizedBox(height: 14),
-                CommonContainer(
-                  color: const Color(0xff35D642),
-                  title: 'Repeat last booking',
-                  path: context.assetImages.a3Vector,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    context.push(RoutePaths.booking);
+                  },
+                  child: CommonContainer(
+                    color: const Color(0xff35D642),
+                    title: 'Repeat last booking',
+                    path: context.assetImages.a3Vector,
+                  ),
                 ),
                 const SizedBox(height: 14),
                 BookingCard(

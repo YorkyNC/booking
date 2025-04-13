@@ -1,6 +1,7 @@
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class BookingPage extends StatefulWidget {
@@ -90,6 +91,13 @@ class _BookingPageState extends State<BookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => context.pop(),
+        ),
         backgroundColor: context.colors.gray100,
         title: Text(
           'Book the place',

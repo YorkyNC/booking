@@ -8,8 +8,12 @@ part of 'get_all_seat_request.dart';
 
 _$GetAllSeatRequestImpl _$$GetAllSeatRequestImplFromJson(
         Map<String, dynamic> json) =>
-    _$GetAllSeatRequestImpl();
+    _$GetAllSeatRequestImpl(
+      floor: (json['floor'] as num).toInt(),
+    );
 
 Map<String, dynamic> _$$GetAllSeatRequestImplToJson(
         _$GetAllSeatRequestImpl instance) =>
-    <String, dynamic>{};
+    <String, dynamic>{
+      'floor': instance.floor,
+    };

@@ -4,6 +4,9 @@ import 'package:booking/src/core/services/injectable/service_register_proxy.dart
 import 'package:booking/src/core/services/storage/storage_service.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
 import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
+import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
+import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
+import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
 import 'package:dio/dio.dart';
 
 import '../../../features/login/domain/usecases/forgot_password_use_case.dart';
@@ -80,6 +83,13 @@ void manualRegisterServices() {
       getIt<UpdatePasswordUseCase>(),
       getIt<RefreshTokenUseCase>(),
       getIt<RegisterUseCase>(),
+    ),
+  );
+  getIt.registerBloc<SeatBloc>(
+    factory: true,
+    () => SeatBloc(
+      getIt<GetAllSeatUseCase>(),
+      getIt<GetSeatUseCase>(),
     ),
   );
 

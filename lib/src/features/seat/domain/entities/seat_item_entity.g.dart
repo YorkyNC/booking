@@ -11,7 +11,8 @@ _$SeatItemEntityImpl _$$SeatItemEntityImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num).toInt(),
       number: json['number'] as String,
       location: json['location'] as String,
-      status: $enumDecode(_$SeatStatusEnumMap, json['status']),
+      status: _statusFromJson(json['status']),
+      floor: (json['floor'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$SeatItemEntityImplToJson(
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$SeatItemEntityImplToJson(
       'number': instance.number,
       'location': instance.location,
       'status': _$SeatStatusEnumMap[instance.status]!,
+      'floor': instance.floor,
     };
 
 const _$SeatStatusEnumMap = {

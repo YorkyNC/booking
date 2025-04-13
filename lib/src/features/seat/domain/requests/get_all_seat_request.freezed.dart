@@ -20,8 +20,16 @@ GetAllSeatRequest _$GetAllSeatRequestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GetAllSeatRequest {
+  int get floor => throw _privateConstructorUsedError;
+
   /// Serializes this GetAllSeatRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of GetAllSeatRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $GetAllSeatRequestCopyWith<GetAllSeatRequest> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -29,6 +37,8 @@ abstract class $GetAllSeatRequestCopyWith<$Res> {
   factory $GetAllSeatRequestCopyWith(
           GetAllSeatRequest value, $Res Function(GetAllSeatRequest) then) =
       _$GetAllSeatRequestCopyWithImpl<$Res, GetAllSeatRequest>;
+  @useResult
+  $Res call({int floor});
 }
 
 /// @nodoc
@@ -43,13 +53,29 @@ class _$GetAllSeatRequestCopyWithImpl<$Res, $Val extends GetAllSeatRequest>
 
   /// Create a copy of GetAllSeatRequest
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? floor = null,
+  }) {
+    return _then(_value.copyWith(
+      floor: null == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$GetAllSeatRequestImplCopyWith<$Res> {
+abstract class _$$GetAllSeatRequestImplCopyWith<$Res>
+    implements $GetAllSeatRequestCopyWith<$Res> {
   factory _$$GetAllSeatRequestImplCopyWith(_$GetAllSeatRequestImpl value,
           $Res Function(_$GetAllSeatRequestImpl) then) =
       __$$GetAllSeatRequestImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int floor});
 }
 
 /// @nodoc
@@ -62,30 +88,56 @@ class __$$GetAllSeatRequestImplCopyWithImpl<$Res>
 
   /// Create a copy of GetAllSeatRequest
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? floor = null,
+  }) {
+    return _then(_$GetAllSeatRequestImpl(
+      floor: null == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$GetAllSeatRequestImpl implements _GetAllSeatRequest {
-  const _$GetAllSeatRequestImpl();
+  const _$GetAllSeatRequestImpl({required this.floor});
 
   factory _$GetAllSeatRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetAllSeatRequestImplFromJson(json);
 
   @override
+  final int floor;
+
+  @override
   String toString() {
-    return 'GetAllSeatRequest()';
+    return 'GetAllSeatRequest(floor: $floor)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$GetAllSeatRequestImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$GetAllSeatRequestImpl &&
+            (identical(other.floor, floor) || other.floor == floor));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, floor);
+
+  /// Create a copy of GetAllSeatRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetAllSeatRequestImplCopyWith<_$GetAllSeatRequestImpl> get copyWith =>
+      __$$GetAllSeatRequestImplCopyWithImpl<_$GetAllSeatRequestImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -96,8 +148,19 @@ class _$GetAllSeatRequestImpl implements _GetAllSeatRequest {
 }
 
 abstract class _GetAllSeatRequest implements GetAllSeatRequest {
-  const factory _GetAllSeatRequest() = _$GetAllSeatRequestImpl;
+  const factory _GetAllSeatRequest({required final int floor}) =
+      _$GetAllSeatRequestImpl;
 
   factory _GetAllSeatRequest.fromJson(Map<String, dynamic> json) =
       _$GetAllSeatRequestImpl.fromJson;
+
+  @override
+  int get floor;
+
+  /// Create a copy of GetAllSeatRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetAllSeatRequestImplCopyWith<_$GetAllSeatRequestImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

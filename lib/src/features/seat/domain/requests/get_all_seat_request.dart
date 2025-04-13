@@ -7,7 +7,9 @@ part 'get_all_seat_request.g.dart';
 /// This is an empty request as the endpoint doesn't require any parameters
 @freezed
 class GetAllSeatRequest with _$GetAllSeatRequest {
-  const factory GetAllSeatRequest() = _GetAllSeatRequest;
+  const factory GetAllSeatRequest({
+    required int floor,
+  }) = _GetAllSeatRequest;
 
   factory GetAllSeatRequest.fromJson(Map<String, dynamic> json) => _$GetAllSeatRequestFromJson(json);
 }

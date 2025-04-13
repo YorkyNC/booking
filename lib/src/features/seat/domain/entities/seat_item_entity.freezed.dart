@@ -23,7 +23,9 @@ mixin _$SeatItemEntity {
   int get id => throw _privateConstructorUsedError;
   String get number => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _statusFromJson)
   SeatStatus get status => throw _privateConstructorUsedError;
+  int get floor => throw _privateConstructorUsedError;
 
   /// Serializes this SeatItemEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,12 @@ abstract class $SeatItemEntityCopyWith<$Res> {
           SeatItemEntity value, $Res Function(SeatItemEntity) then) =
       _$SeatItemEntityCopyWithImpl<$Res, SeatItemEntity>;
   @useResult
-  $Res call({int id, String number, String location, SeatStatus status});
+  $Res call(
+      {int id,
+      String number,
+      String location,
+      @JsonKey(fromJson: _statusFromJson) SeatStatus status,
+      int floor});
 }
 
 /// @nodoc
@@ -63,6 +70,7 @@ class _$SeatItemEntityCopyWithImpl<$Res, $Val extends SeatItemEntity>
     Object? number = null,
     Object? location = null,
     Object? status = null,
+    Object? floor = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -81,6 +89,10 @@ class _$SeatItemEntityCopyWithImpl<$Res, $Val extends SeatItemEntity>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SeatStatus,
+      floor: null == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -93,7 +105,12 @@ abstract class _$$SeatItemEntityImplCopyWith<$Res>
       __$$SeatItemEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String number, String location, SeatStatus status});
+  $Res call(
+      {int id,
+      String number,
+      String location,
+      @JsonKey(fromJson: _statusFromJson) SeatStatus status,
+      int floor});
 }
 
 /// @nodoc
@@ -113,6 +130,7 @@ class __$$SeatItemEntityImplCopyWithImpl<$Res>
     Object? number = null,
     Object? location = null,
     Object? status = null,
+    Object? floor = null,
   }) {
     return _then(_$SeatItemEntityImpl(
       id: null == id
@@ -131,6 +149,10 @@ class __$$SeatItemEntityImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SeatStatus,
+      floor: null == floor
+          ? _value.floor
+          : floor // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -142,7 +164,8 @@ class _$SeatItemEntityImpl implements _SeatItemEntity {
       {required this.id,
       required this.number,
       required this.location,
-      required this.status});
+      @JsonKey(fromJson: _statusFromJson) required this.status,
+      required this.floor});
 
   factory _$SeatItemEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$SeatItemEntityImplFromJson(json);
@@ -154,11 +177,14 @@ class _$SeatItemEntityImpl implements _SeatItemEntity {
   @override
   final String location;
   @override
+  @JsonKey(fromJson: _statusFromJson)
   final SeatStatus status;
+  @override
+  final int floor;
 
   @override
   String toString() {
-    return 'SeatItemEntity(id: $id, number: $number, location: $location, status: $status)';
+    return 'SeatItemEntity(id: $id, number: $number, location: $location, status: $status, floor: $floor)';
   }
 
   @override
@@ -170,12 +196,14 @@ class _$SeatItemEntityImpl implements _SeatItemEntity {
             (identical(other.number, number) || other.number == number) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.floor, floor) || other.floor == floor));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, number, location, status);
+  int get hashCode =>
+      Object.hash(runtimeType, id, number, location, status, floor);
 
   /// Create a copy of SeatItemEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -199,7 +227,8 @@ abstract class _SeatItemEntity implements SeatItemEntity {
       {required final int id,
       required final String number,
       required final String location,
-      required final SeatStatus status}) = _$SeatItemEntityImpl;
+      @JsonKey(fromJson: _statusFromJson) required final SeatStatus status,
+      required final int floor}) = _$SeatItemEntityImpl;
 
   factory _SeatItemEntity.fromJson(Map<String, dynamic> json) =
       _$SeatItemEntityImpl.fromJson;
@@ -211,7 +240,10 @@ abstract class _SeatItemEntity implements SeatItemEntity {
   @override
   String get location;
   @override
+  @JsonKey(fromJson: _statusFromJson)
   SeatStatus get status;
+  @override
+  int get floor;
 
   /// Create a copy of SeatItemEntity
   /// with the given fields replaced by the non-null parameter values.

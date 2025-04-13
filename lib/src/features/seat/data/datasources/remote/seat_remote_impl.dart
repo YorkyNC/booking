@@ -40,8 +40,11 @@ class SeatRemoteImpl implements ISeatRemote {
 
   @override
   Future<Either<DomainException, GetAllSeatEntity>> getAllSeat(GetAllSeatRequest request) async {
+    final queryParameters = <String, dynamic>{};
+    queryParameters['floor'] = request.floor;
     final Either<DomainException, Response<dynamic>> response = await client.get(
       'http://45.136.56.65:8000/rest/sdu/booking/seat/all',
+      queryParameters: queryParameters,
       options: Options(
         headers: headers,
       ),

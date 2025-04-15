@@ -1,5 +1,7 @@
+import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../../core/exceptions/domain_exception.dart';
@@ -13,5 +15,8 @@ abstract class ISeatRemote {
 
   Future<Either<DomainException, SeatItemEntity>> getSeat(
     GetSeatRequest request,
+  );
+  Future<Either<DomainException, CreateReservationEntity>> createReservation(
+    CreateReservationRequest request,
   );
 }

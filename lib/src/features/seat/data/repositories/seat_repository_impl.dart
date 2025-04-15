@@ -1,4 +1,6 @@
+import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
@@ -44,6 +46,23 @@ class SeatRepositoryImpl implements ISeatRepository {
         (response) {
           final SeatItemEntity result = response;
 
+          return Right(result);
+        },
+      );
+    } catch (e) {
+      Log.e(e);
+      return Left(UnknownException(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<DomainException, CreateReservationEntity>> createReservation(CreateReservationRequest request) async {
+    try {
+      final requests = await _seatImpl.createReservation(request);
+
+      return requests.fold(
+        (error) => Left(error),
+        (result) {
           return Right(result);
         },
       );

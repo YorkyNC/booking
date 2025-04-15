@@ -1,5 +1,7 @@
+import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
@@ -54,6 +56,32 @@ class SeatRemoteImpl implements ISeatRemote {
       (error) => Left(error),
       (result) async {
         return Right(GetAllSeatEntity.fromJson(result.data));
+      },
+    );
+  }
+
+  @override
+  Future<Either<DomainException, CreateReservationEntity>> createReservation(CreateReservationRequest request) async {
+    final Either<DomainException, Response<dynamic>> response = await client.post(
+      'http://45.136.56.65:8000/rest/sdu/booking/reservations/create',
+      data: request.toJson(),
+      options: Options(
+        headers: headers,
+      ),
+    );
+
+    return response.fold(
+      (error) => Left(error),
+      (result) async {
+        if (result.statusCode == 200 || result.statusCode == 201) {
+          try {
+            return Right(CreateReservationEntity.fromJson(result.data));
+          } catch (e) {
+            return Left(UnknownException(message: 'Failed to parse response: $e'));
+          }
+        } else {
+          return Left(UnknownException(message: result.statusMessage ?? 'Unknown error'));
+        }
       },
     );
   }

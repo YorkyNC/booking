@@ -14,5 +14,6 @@ class SeatViewModel with _$SeatViewModel {
   const factory SeatViewModel({
     GetAllSeatEntity? allSeat,
     SeatItemEntity? seat,
+    CreateReservationEntity? reservation,
   }) = _SeatViewModel;
 }

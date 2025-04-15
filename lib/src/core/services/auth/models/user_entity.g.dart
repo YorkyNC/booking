@@ -28,4 +28,6 @@ Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
 
 const _$RoleEnumMap = {
   Role.student: 'STUDENT',
+  Role.librarian: 'LIBRARIAN',
+  Role.admin: 'ADMIN',
 };

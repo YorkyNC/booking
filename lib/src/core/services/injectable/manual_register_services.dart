@@ -5,6 +5,7 @@ import 'package:booking/src/core/services/storage/storage_service.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
 import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
 import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
+import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
 import 'package:dio/dio.dart';
@@ -90,6 +91,7 @@ void manualRegisterServices() {
     () => SeatBloc(
       getIt<GetAllSeatUseCase>(),
       getIt<GetSeatUseCase>(),
+      getIt<CreateReservationUseCase>(),
     ),
   );
 

@@ -21,6 +21,8 @@ mixin _$SeatEvent {
     required TResult Function() started,
     required TResult Function(GetAllSeatRequest request) getAll,
     required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +30,7 @@ mixin _$SeatEvent {
     TResult? Function()? started,
     TResult? Function(GetAllSeatRequest request)? getAll,
     TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +38,7 @@ mixin _$SeatEvent {
     TResult Function()? started,
     TResult Function(GetAllSeatRequest request)? getAll,
     TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +47,7 @@ mixin _$SeatEvent {
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllSeat value) getAll,
     required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +55,7 @@ mixin _$SeatEvent {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllSeat value)? getAll,
     TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +63,7 @@ mixin _$SeatEvent {
     TResult Function(_Started value)? started,
     TResult Function(_GetAllSeat value)? getAll,
     TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -126,6 +133,8 @@ class _$StartedImpl implements _Started {
     required TResult Function() started,
     required TResult Function(GetAllSeatRequest request) getAll,
     required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
   }) {
     return started();
   }
@@ -136,6 +145,7 @@ class _$StartedImpl implements _Started {
     TResult? Function()? started,
     TResult? Function(GetAllSeatRequest request)? getAll,
     TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
   }) {
     return started?.call();
   }
@@ -146,6 +156,7 @@ class _$StartedImpl implements _Started {
     TResult Function()? started,
     TResult Function(GetAllSeatRequest request)? getAll,
     TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -160,6 +171,7 @@ class _$StartedImpl implements _Started {
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllSeat value) getAll,
     required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
   }) {
     return started(this);
   }
@@ -170,6 +182,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllSeat value)? getAll,
     TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
   }) {
     return started?.call(this);
   }
@@ -180,6 +193,7 @@ class _$StartedImpl implements _Started {
     TResult Function(_Started value)? started,
     TResult Function(_GetAllSeat value)? getAll,
     TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -276,6 +290,8 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     required TResult Function() started,
     required TResult Function(GetAllSeatRequest request) getAll,
     required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
   }) {
     return getAll(request);
   }
@@ -286,6 +302,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult? Function()? started,
     TResult? Function(GetAllSeatRequest request)? getAll,
     TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
   }) {
     return getAll?.call(request);
   }
@@ -296,6 +313,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult Function()? started,
     TResult Function(GetAllSeatRequest request)? getAll,
     TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
     required TResult orElse(),
   }) {
     if (getAll != null) {
@@ -310,6 +328,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllSeat value) getAll,
     required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
   }) {
     return getAll(this);
   }
@@ -320,6 +339,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllSeat value)? getAll,
     TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
   }) {
     return getAll?.call(this);
   }
@@ -330,6 +350,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult Function(_Started value)? started,
     TResult Function(_GetAllSeat value)? getAll,
     TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
     required TResult orElse(),
   }) {
     if (getAll != null) {
@@ -434,6 +455,8 @@ class _$GetSeatImpl implements _GetSeat {
     required TResult Function() started,
     required TResult Function(GetAllSeatRequest request) getAll,
     required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
   }) {
     return getSeat(request);
   }
@@ -444,6 +467,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult? Function()? started,
     TResult? Function(GetAllSeatRequest request)? getAll,
     TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
   }) {
     return getSeat?.call(request);
   }
@@ -454,6 +478,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult Function()? started,
     TResult Function(GetAllSeatRequest request)? getAll,
     TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
     required TResult orElse(),
   }) {
     if (getSeat != null) {
@@ -468,6 +493,7 @@ class _$GetSeatImpl implements _GetSeat {
     required TResult Function(_Started value) started,
     required TResult Function(_GetAllSeat value) getAll,
     required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
   }) {
     return getSeat(this);
   }
@@ -478,6 +504,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult? Function(_Started value)? started,
     TResult? Function(_GetAllSeat value)? getAll,
     TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
   }) {
     return getSeat?.call(this);
   }
@@ -488,6 +515,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult Function(_Started value)? started,
     TResult Function(_GetAllSeat value)? getAll,
     TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
     required TResult orElse(),
   }) {
     if (getSeat != null) {
@@ -506,6 +534,173 @@ abstract class _GetSeat implements SeatEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetSeatImplCopyWith<_$GetSeatImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CreateReservationImplCopyWith<$Res> {
+  factory _$$CreateReservationImplCopyWith(_$CreateReservationImpl value,
+          $Res Function(_$CreateReservationImpl) then) =
+      __$$CreateReservationImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CreateReservationRequest request});
+
+  $CreateReservationRequestCopyWith<$Res> get request;
+}
+
+/// @nodoc
+class __$$CreateReservationImplCopyWithImpl<$Res>
+    extends _$SeatEventCopyWithImpl<$Res, _$CreateReservationImpl>
+    implements _$$CreateReservationImplCopyWith<$Res> {
+  __$$CreateReservationImplCopyWithImpl(_$CreateReservationImpl _value,
+      $Res Function(_$CreateReservationImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? request = null,
+  }) {
+    return _then(_$CreateReservationImpl(
+      null == request
+          ? _value.request
+          : request // ignore: cast_nullable_to_non_nullable
+              as CreateReservationRequest,
+    ));
+  }
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CreateReservationRequestCopyWith<$Res> get request {
+    return $CreateReservationRequestCopyWith<$Res>(_value.request, (value) {
+      return _then(_value.copyWith(request: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CreateReservationImpl implements _CreateReservation {
+  const _$CreateReservationImpl(this.request);
+
+  @override
+  final CreateReservationRequest request;
+
+  @override
+  String toString() {
+    return 'SeatEvent.createReservation(request: $request)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CreateReservationImpl &&
+            (identical(other.request, request) || other.request == request));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, request);
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CreateReservationImplCopyWith<_$CreateReservationImpl> get copyWith =>
+      __$$CreateReservationImplCopyWithImpl<_$CreateReservationImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(GetAllSeatRequest request) getAll,
+    required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
+  }) {
+    return createReservation(request);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(GetAllSeatRequest request)? getAll,
+    TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
+  }) {
+    return createReservation?.call(request);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(GetAllSeatRequest request)? getAll,
+    TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
+    required TResult orElse(),
+  }) {
+    if (createReservation != null) {
+      return createReservation(request);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetAllSeat value) getAll,
+    required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
+  }) {
+    return createReservation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetAllSeat value)? getAll,
+    TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
+  }) {
+    return createReservation?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetAllSeat value)? getAll,
+    TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
+    required TResult orElse(),
+  }) {
+    if (createReservation != null) {
+      return createReservation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CreateReservation implements SeatEvent {
+  const factory _CreateReservation(final CreateReservationRequest request) =
+      _$CreateReservationImpl;
+
+  CreateReservationRequest get request;
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CreateReservationImplCopyWith<_$CreateReservationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -998,6 +1193,8 @@ abstract class _Error implements SeatState {
 mixin _$SeatViewModel {
   GetAllSeatEntity? get allSeat => throw _privateConstructorUsedError;
   SeatItemEntity? get seat => throw _privateConstructorUsedError;
+  CreateReservationEntity? get reservation =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of SeatViewModel
   /// with the given fields replaced by the non-null parameter values.
@@ -1012,10 +1209,14 @@ abstract class $SeatViewModelCopyWith<$Res> {
           SeatViewModel value, $Res Function(SeatViewModel) then) =
       _$SeatViewModelCopyWithImpl<$Res, SeatViewModel>;
   @useResult
-  $Res call({GetAllSeatEntity? allSeat, SeatItemEntity? seat});
+  $Res call(
+      {GetAllSeatEntity? allSeat,
+      SeatItemEntity? seat,
+      CreateReservationEntity? reservation});
 
   $GetAllSeatEntityCopyWith<$Res>? get allSeat;
   $SeatItemEntityCopyWith<$Res>? get seat;
+  $CreateReservationEntityCopyWith<$Res>? get reservation;
 }
 
 /// @nodoc
@@ -1035,6 +1236,7 @@ class _$SeatViewModelCopyWithImpl<$Res, $Val extends SeatViewModel>
   $Res call({
     Object? allSeat = freezed,
     Object? seat = freezed,
+    Object? reservation = freezed,
   }) {
     return _then(_value.copyWith(
       allSeat: freezed == allSeat
@@ -1045,6 +1247,10 @@ class _$SeatViewModelCopyWithImpl<$Res, $Val extends SeatViewModel>
           ? _value.seat
           : seat // ignore: cast_nullable_to_non_nullable
               as SeatItemEntity?,
+      reservation: freezed == reservation
+          ? _value.reservation
+          : reservation // ignore: cast_nullable_to_non_nullable
+              as CreateReservationEntity?,
     ) as $Val);
   }
 
@@ -1075,6 +1281,20 @@ class _$SeatViewModelCopyWithImpl<$Res, $Val extends SeatViewModel>
       return _then(_value.copyWith(seat: value) as $Val);
     });
   }
+
+  /// Create a copy of SeatViewModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CreateReservationEntityCopyWith<$Res>? get reservation {
+    if (_value.reservation == null) {
+      return null;
+    }
+
+    return $CreateReservationEntityCopyWith<$Res>(_value.reservation!, (value) {
+      return _then(_value.copyWith(reservation: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -1085,12 +1305,17 @@ abstract class _$$SeatViewModelImplCopyWith<$Res>
       __$$SeatViewModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({GetAllSeatEntity? allSeat, SeatItemEntity? seat});
+  $Res call(
+      {GetAllSeatEntity? allSeat,
+      SeatItemEntity? seat,
+      CreateReservationEntity? reservation});
 
   @override
   $GetAllSeatEntityCopyWith<$Res>? get allSeat;
   @override
   $SeatItemEntityCopyWith<$Res>? get seat;
+  @override
+  $CreateReservationEntityCopyWith<$Res>? get reservation;
 }
 
 /// @nodoc
@@ -1108,6 +1333,7 @@ class __$$SeatViewModelImplCopyWithImpl<$Res>
   $Res call({
     Object? allSeat = freezed,
     Object? seat = freezed,
+    Object? reservation = freezed,
   }) {
     return _then(_$SeatViewModelImpl(
       allSeat: freezed == allSeat
@@ -1118,6 +1344,10 @@ class __$$SeatViewModelImplCopyWithImpl<$Res>
           ? _value.seat
           : seat // ignore: cast_nullable_to_non_nullable
               as SeatItemEntity?,
+      reservation: freezed == reservation
+          ? _value.reservation
+          : reservation // ignore: cast_nullable_to_non_nullable
+              as CreateReservationEntity?,
     ));
   }
 }
@@ -1125,16 +1355,18 @@ class __$$SeatViewModelImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SeatViewModelImpl implements _SeatViewModel {
-  const _$SeatViewModelImpl({this.allSeat, this.seat});
+  const _$SeatViewModelImpl({this.allSeat, this.seat, this.reservation});
 
   @override
   final GetAllSeatEntity? allSeat;
   @override
   final SeatItemEntity? seat;
+  @override
+  final CreateReservationEntity? reservation;
 
   @override
   String toString() {
-    return 'SeatViewModel(allSeat: $allSeat, seat: $seat)';
+    return 'SeatViewModel(allSeat: $allSeat, seat: $seat, reservation: $reservation)';
   }
 
   @override
@@ -1143,11 +1375,13 @@ class _$SeatViewModelImpl implements _SeatViewModel {
         (other.runtimeType == runtimeType &&
             other is _$SeatViewModelImpl &&
             (identical(other.allSeat, allSeat) || other.allSeat == allSeat) &&
-            (identical(other.seat, seat) || other.seat == seat));
+            (identical(other.seat, seat) || other.seat == seat) &&
+            (identical(other.reservation, reservation) ||
+                other.reservation == reservation));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, allSeat, seat);
+  int get hashCode => Object.hash(runtimeType, allSeat, seat, reservation);
 
   /// Create a copy of SeatViewModel
   /// with the given fields replaced by the non-null parameter values.
@@ -1161,12 +1395,15 @@ class _$SeatViewModelImpl implements _SeatViewModel {
 abstract class _SeatViewModel implements SeatViewModel {
   const factory _SeatViewModel(
       {final GetAllSeatEntity? allSeat,
-      final SeatItemEntity? seat}) = _$SeatViewModelImpl;
+      final SeatItemEntity? seat,
+      final CreateReservationEntity? reservation}) = _$SeatViewModelImpl;
 
   @override
   GetAllSeatEntity? get allSeat;
   @override
   SeatItemEntity? get seat;
+  @override
+  CreateReservationEntity? get reservation;
 
   /// Create a copy of SeatViewModel
   /// with the given fields replaced by the non-null parameter values.

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/core/services/injectable/injectable_service.dart';
@@ -12,6 +14,7 @@ import 'package:booking/src/features/booking/presentation/components/time_range_
 import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_all_seat_request.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -202,24 +205,134 @@ class _BookingPageState extends State<BookingPage> {
   }
 
   void handleSubmit() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+    final formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+    final startDateTime = _combineDateAndTime(formattedDate, _selectedStartTime!);
+    final endDateTime = _combineDateAndTime(formattedDate, _selectedEndTime!);
 
-      final bookingDetails = BookingDataExtractor.formatBookingDetails(
-        floor: _selectedFloor,
-        sector: _selectedSector,
-        date: _dateController.text,
-        startTime: _selectedStartTime,
-        endTime: _selectedEndTime,
-        row: _selectedRow,
-        place: _selectedPlace,
+    final CreateReservationRequest request = CreateReservationRequest(
+      seatId: _selectedSeat!.id,
+      startTime: startDateTime,
+      endTime: endDateTime,
+      date: formattedDate,
+    );
+
+    debugPrint('Creating reservation: ${request.toJson()}');
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Creating reservation...'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    // Get the BLoC and dispatch the event
+    final bookingBloc = getIt<SeatBloc>();
+    bookingBloc.add(SeatEvent.createReservation(request));
+
+    // Listen for state changes using a subscription to handle completion
+    late final StreamSubscription subscription;
+    subscription = bookingBloc.stream.listen((state) {
+      state.maybeWhen(
+        loaded: (data) {
+          // Close loading dialog
+          context.pop();
+
+          // Cancel subscription to prevent memory leaks
+          subscription.cancel();
+
+          // Show success dialog
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext dialogContext) {
+              return ReservationDialog(
+                isSuccess: true,
+                message: 'Your reservation has been successfully created.',
+                reservationDetails: {
+                  'Floor': _selectedFloor ?? 'N/A',
+                  'Sector': _selectedSector ?? 'N/A',
+                  'Seat': '${_selectedSeat?.number ?? 'N/A'}, Location: ${_selectedSeat?.location ?? 'N/A'}',
+                  'Date': _dateController.text,
+                  'Time': '$_selectedStartTime - $_selectedEndTime',
+                },
+                buttonText: 'Done',
+                onButtonPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  // Optionally navigate back or reset form
+                  setState(() {
+                    // Reset form state after successful booking
+                    _showBookingSummary = false;
+                    _selectedSeat = null;
+                    _selectedRow = null;
+                    _selectedPlace = null;
+                  });
+                },
+              );
+            },
+          );
+        },
+        error: (errorMessage) {
+          // Close loading dialog
+          context.pop();
+
+          // Cancel subscription to prevent memory leaks
+          subscription.cancel();
+
+          // Show error dialog
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext dialogContext) {
+              return ReservationDialog(
+                isSuccess: false,
+                message: 'Unable to create reservation.',
+                reservationDetails: {
+                  'Error': errorMessage,
+                },
+                buttonText: 'Try Again',
+                onButtonPressed: () {
+                  dialogContext.pop();
+                },
+              );
+            },
+          );
+        },
+        orElse: () {},
       );
+    });
+  }
 
-      debugPrint('Booking details: $bookingDetails');
+  // Helper method to combine date and time into ISO-8601 format
+  String _combineDateAndTime(String date, String timeStr) {
+    // Parse the time string (assuming format like "09:00")
+    final timeParts = timeStr.split(':');
+    final hour = int.parse(timeParts[0]);
+    final minute = int.parse(timeParts[1]);
 
-      // Here you would call your booking API or event
-      // For example: bloc.add(SeatEvent.bookSeat(bookingRequest));
-    }
+    // Parse the date string
+    final dateParts = date.split('-');
+    final year = int.parse(dateParts[0]);
+    final month = int.parse(dateParts[1]);
+    final day = int.parse(dateParts[2]);
+
+    // Create DateTime object and format as ISO-8601
+    final dateTime = DateTime(year, month, day, hour, minute);
+    return dateTime.toUtc().toIso8601String();
   }
 
   @override
@@ -264,129 +377,134 @@ class _BookingPageState extends State<BookingPage> {
               });
             }
 
-            return Scaffold(
-              appBar: AppBar(
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.chevron_left,
-                    color: Colors.black,
-                  ),
-                  onPressed: () => context.pop(),
-                ),
-                backgroundColor: context.colors.gray100,
-                title: Text(
-                  'Book the place',
-                  style: context.typography.displayxsSemibold.copyWith(
-                    color: context.colors.black,
-                  ),
-                ),
-                centerTitle: true,
-              ),
-              backgroundColor: context.colors.gray100,
-              body: Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 29.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        const SectionHeader(text: 'Choose floor'),
-                        const SizedBox(height: 10),
-                        CustomDropdown(
-                          context: context,
-                          items: _floorData,
-                          hintText: 'Floor',
-                          valueKey: 'id',
-                          displayKey: 'name',
-                          countKey: 'available',
-                          value: _selectedFloor,
-                          validator: Validators.requiredFieldValidator('floor'),
-                          onChanged: (value) {
-                            if (value != null) {
-                              handleFloorChanged(value, bloc);
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        const SectionHeader(text: 'Choose sector'),
-                        const SizedBox(height: 10),
-                        CustomDropdown(
-                          context: context,
-                          items: _sectorData,
-                          hintText: 'Sector',
-                          valueKey: 'id',
-                          displayKey: 'name',
-                          countKey: 'available',
-                          value: _selectedSector,
-                          validator: Validators.requiredFieldValidator('sector'),
-                          onChanged: (value) => setState(() => _selectedSector = value),
-                        ),
-                        const SizedBox(height: 20),
-                        const SectionHeader(text: 'Choose Date'),
-                        const SizedBox(height: 10),
-                        CustomDatePicker(
-                          context: context,
-                          controller: _dateController,
-                          selectedDate: _selectedDate,
-                          onDateSelected: handleDateSelected,
-                        ),
-                        const SizedBox(height: 20),
-                        const SectionHeader(text: 'Time Range'),
-                        const SizedBox(height: 10),
-                        TimeRangePicker(
-                          context: context,
-                          startTimes: _startTimes,
-                          endTimes: _endTimes,
-                          selectedStartTime: _selectedStartTime,
-                          selectedEndTime: _selectedEndTime,
-                          validator: Validators.requiredFieldValidator('time'),
-                          onStartTimeChanged: (value) {
-                            setState(() {
-                              _selectedStartTime = value;
-                              // Reset end time if needed
-                              if (_selectedEndTime != null) {
-                                final startIndex = _startTimes.indexOf(value!);
-                                final endIndex = _endTimes.indexOf(_selectedEndTime!);
-                                if (endIndex <= startIndex) {
-                                  _selectedEndTime = null;
-                                }
-                              }
-                            });
-                          },
-                          onEndTimeChanged: (value) => setState(() => _selectedEndTime = value),
-                        ),
-                        const SizedBox(height: 30),
-                        const SectionHeader(text: 'Map'),
-                        const SizedBox(height: 20),
-                        _buildSeatList(seats),
-                        const SizedBox(height: 10),
-                        if (_showBookingSummary)
-                          BookingSummary(
-                            selectedFloor: _selectedFloor,
-                            selectedSector: _selectedSector,
-                            selectedRow: _selectedRow,
-                            selectedPlace: _selectedPlace,
-                            date: _dateController.text,
-                            selectedStartTime: _selectedStartTime,
-                            selectedEndTime: _selectedEndTime,
-                            onDelete: handleDeleteSeatSelection,
-                          ),
-                        const SizedBox(height: 30),
-                        SubmitButton(
-                          onPressed: handleSubmit,
-                        ),
-                        const SizedBox(height: 30),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+            return _buildMainScaffold(context, bloc, seats);
           },
         );
       },
+    );
+  }
+
+  // Extract the main Scaffold to a separate method for better code organization
+  Widget _buildMainScaffold(BuildContext context, SeatBloc bloc, List<SeatItemEntity> seats) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+          ),
+          onPressed: () => context.pop(),
+        ),
+        backgroundColor: context.colors.gray100,
+        title: Text(
+          'Book the place',
+          style: context.typography.displayxsSemibold.copyWith(
+            color: context.colors.black,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      backgroundColor: context.colors.gray100,
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 29.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const SectionHeader(text: 'Choose floor'),
+                const SizedBox(height: 10),
+                CustomDropdown(
+                  context: context,
+                  items: _floorData,
+                  hintText: 'Floor',
+                  valueKey: 'id',
+                  displayKey: 'name',
+                  countKey: 'available',
+                  value: _selectedFloor,
+                  validator: Validators.requiredFieldValidator('floor'),
+                  onChanged: (value) {
+                    if (value != null) {
+                      handleFloorChanged(value, bloc);
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                const SectionHeader(text: 'Choose sector'),
+                const SizedBox(height: 10),
+                CustomDropdown(
+                  context: context,
+                  items: _sectorData,
+                  hintText: 'Sector',
+                  valueKey: 'id',
+                  displayKey: 'name',
+                  countKey: 'available',
+                  value: _selectedSector,
+                  validator: Validators.requiredFieldValidator('sector'),
+                  onChanged: (value) => setState(() => _selectedSector = value),
+                ),
+                const SizedBox(height: 20),
+                const SectionHeader(text: 'Choose Date'),
+                const SizedBox(height: 10),
+                CustomDatePicker(
+                  context: context,
+                  controller: _dateController,
+                  selectedDate: _selectedDate,
+                  onDateSelected: handleDateSelected,
+                ),
+                const SizedBox(height: 20),
+                const SectionHeader(text: 'Time Range'),
+                const SizedBox(height: 10),
+                TimeRangePicker(
+                  context: context,
+                  startTimes: _startTimes,
+                  endTimes: _endTimes,
+                  selectedStartTime: _selectedStartTime,
+                  selectedEndTime: _selectedEndTime,
+                  validator: Validators.requiredFieldValidator('time'),
+                  onStartTimeChanged: (value) {
+                    setState(() {
+                      _selectedStartTime = value;
+                      // Reset end time if needed
+                      if (_selectedEndTime != null) {
+                        final startIndex = _startTimes.indexOf(value!);
+                        final endIndex = _endTimes.indexOf(_selectedEndTime!);
+                        if (endIndex <= startIndex) {
+                          _selectedEndTime = null;
+                        }
+                      }
+                    });
+                  },
+                  onEndTimeChanged: (value) => setState(() => _selectedEndTime = value),
+                ),
+                const SizedBox(height: 30),
+                const SectionHeader(text: 'Map'),
+                const SizedBox(height: 20),
+                _buildSeatList(seats),
+                const SizedBox(height: 10),
+                if (_showBookingSummary)
+                  BookingSummary(
+                    selectedFloor: _selectedFloor,
+                    selectedSector: _selectedSector,
+                    selectedRow: _selectedRow,
+                    selectedPlace: _selectedPlace,
+                    date: _dateController.text,
+                    selectedStartTime: _selectedStartTime,
+                    selectedEndTime: _selectedEndTime,
+                    onDelete: handleDeleteSeatSelection,
+                  ),
+                const SizedBox(height: 30),
+                SubmitButton(
+                  onPressed: handleSubmit,
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -663,6 +781,149 @@ class _BookingPageState extends State<BookingPage> {
         const SizedBox(width: 4),
         Text(label, style: const TextStyle(fontSize: 12)),
       ],
+    );
+  }
+}
+
+class ReservationDialog extends StatelessWidget {
+  final bool isSuccess;
+  final String message;
+  final Map<String, String>? reservationDetails;
+  final VoidCallback onButtonPressed;
+  final String buttonText;
+
+  const ReservationDialog({
+    Key? key,
+    required this.isSuccess,
+    required this.message,
+    this.reservationDetails,
+    required this.onButtonPressed,
+    required this.buttonText,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: _buildDialogContent(context),
+    );
+  }
+
+  Widget _buildDialogContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 10.0,
+            offset: Offset(0.0, 10.0),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          // Icon
+          _buildStatusIcon(),
+          const SizedBox(height: 16),
+
+          // Title
+          Text(
+            isSuccess ? 'Success!' : 'Failed',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: isSuccess ? Colors.green : Colors.red,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Message
+          Text(
+            message,
+            style: const TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+
+          // Details if available
+          if (reservationDetails != null) ...[
+            const Divider(),
+            const SizedBox(height: 8),
+            _buildReservationDetails(),
+            const SizedBox(height: 16),
+          ],
+
+          // Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: isSuccess ? Colors.green : Colors.red,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: onButtonPressed,
+              child: Text(buttonText),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusIcon() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isSuccess ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(
+        isSuccess ? Icons.check_circle_outline : Icons.error_outline,
+        size: 40,
+        color: isSuccess ? Colors.green : Colors.red,
+      ),
+    );
+  }
+
+  Widget _buildReservationDetails() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: reservationDetails!.entries.map((entry) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${entry.key}: ",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  entry.value,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

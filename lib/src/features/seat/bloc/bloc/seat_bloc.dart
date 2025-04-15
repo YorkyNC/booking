@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_all_seat_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_seat_request.dart';
+import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +24,12 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
   SeatBloc(
     this.getAllSeatUseCase,
     this.getSeatUseCase,
+    this.createReservationUseCase,
   ) : super(const SeatState.loading());
 
   final GetAllSeatUseCase getAllSeatUseCase;
   final GetSeatUseCase getSeatUseCase;
-
+  final CreateReservationUseCase createReservationUseCase;
   SeatViewModel _viewModel = const SeatViewModel();
 
   @override
@@ -40,10 +44,31 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
         event as _GetSeat,
         emit as Emitter<SeatState>,
       ),
+      createReservation: (request) => _createReservation(
+        event as _CreateReservation,
+        emit as Emitter<SeatState>,
+      ),
     );
   }
 
   Future<void> _started(_Started event) async {}
+
+  Future<void> _createReservation(_CreateReservation event, Emitter emit) async {
+    emit(const SeatState.loading());
+    final Result<CreateReservationEntity, DomainException> result = await createReservationUseCase.call(event.request);
+
+    if (result.isSuccessful) {
+      return emit(
+        _Loaded(
+          viewModel: _viewModel.copyWith(
+            reservation: result.data,
+          ),
+        ),
+      );
+    }
+
+    return emit(SeatState.error(result.failure!.message));
+  }
 
   Future<void> _getAll(_GetAllSeat event, Emitter emit) async {
     final Result<GetAllSeatEntity, DomainException> result = await getAllSeatUseCase.call(event.request);

@@ -19,6 +19,10 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
   static const String _refreshTokenKey = 'REFRESH_TOKEN';
   static const String _roleKey = 'ROLE';
   static const String _languageCode = 'LANGUAGE_CODE';
+  static const String _idKey = 'ID';
+  static const String _emailKey = 'EMAIL';
+  static const String _nameKey = 'NAME';
+  static const String _lastNameKey = 'LAST_NAME';
 
   // Device-related keys
   static const String _clientIdKey = 'CLIENT_ID';
@@ -50,6 +54,109 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
       return _cachedLastSentFcmToken;
     } catch (e) {
       debugPrint('Error getting last sent FCM token: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<void> setUserId(int userId) async {
+    try {
+      await authBox.put(_idKey, userId);
+      debugPrint('User ID saved successfully: $userId');
+    } catch (e) {
+      debugPrint('Error saving user ID: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserName(String userName) async {
+    try {
+      await authBox.put(_nameKey, userName);
+      debugPrint('User name saved successfully: $userName');
+    } catch (e) {
+      debugPrint('Error saving user name: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserEmail(String userEmail) async {
+    try {
+      await authBox.put(_emailKey, userEmail);
+      debugPrint('User email saved successfully: $userEmail');
+    } catch (e) {
+      debugPrint('Error saving user email: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserLastName(String lastName) async {
+    try {
+      await authBox.put(_lastNameKey, lastName);
+      debugPrint('User last name saved successfully: $lastName');
+    } catch (e) {
+      debugPrint('Error saving user last name: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserFirstName(String firstName) async {
+    try {
+      await authBox.put(_nameKey, firstName);
+      debugPrint('User first name saved successfully: $firstName');
+    } catch (e) {
+      debugPrint('Error saving user first name: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  String? getUserId() {
+    try {
+      final userId = authBox.get(_idKey);
+      debugPrint('Retrieved user ID: $userId');
+      return userId;
+    } catch (e) {
+      debugPrint('Error getting user ID: $e');
+      return null;
+    }
+  }
+
+  @override
+  String? getUserFirstName() {
+    try {
+      final userName = authBox.get(_nameKey);
+      debugPrint('Retrieved user name: $userName');
+      return userName;
+    } catch (e) {
+      debugPrint('Error getting user name: $e');
+      return null;
+    }
+  }
+
+  @override
+  String? getUserEmail() {
+    try {
+      final userEmail = authBox.get(_emailKey);
+      debugPrint('Retrieved user email: $userEmail');
+      return userEmail;
+    } catch (e) {
+      debugPrint('Error getting user email: $e');
+      return null;
+    }
+  }
+
+  @override
+  String? getUserLastName() {
+    try {
+      final lastName = authBox.get(_lastNameKey);
+      debugPrint('Retrieved user last name: $lastName');
+      return lastName;
+    } catch (e) {
+      debugPrint('Error getting user last name: $e');
       return null;
     }
   }
@@ -194,4 +301,28 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
 
   @override
   bool get isLoggedIn => checkLoggedIn();
+
+  @override
+  Future<void> deleteUserEmail() async {
+    await authBox.delete(_emailKey);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> deleteUserFirstName() async {
+    await authBox.delete(_nameKey);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> deleteUserId() async {
+    await authBox.delete(_idKey);
+    notifyListeners();
+  }
+
+  @override
+  Future<void> deleteUserLastName() async {
+    await authBox.delete(_lastNameKey);
+    notifyListeners();
+  }
 }

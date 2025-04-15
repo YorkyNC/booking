@@ -105,6 +105,10 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         // Store tokens first
         await st.setToken(result.data!.accessToken);
         await st.setRefreshToken(result.data!.refreshToken);
+        await st.setUserId(result.data!.user.id!);
+        await st.setUserName(result.data!.user.firstName!);
+        await st.setUserEmail(result.data!.user.email!);
+        await st.setUserLastName(result.data!.user.lastName!);
       } catch (e) {
         debugPrint('Error during login token operations: $e');
       }
@@ -143,6 +147,10 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         // Store tokens first
         await st.setToken(result.data!.accessToken);
         await st.setRefreshToken(result.data!.refreshToken);
+        await st.setUserId(result.data!.user.id!);
+        await st.setUserName(result.data!.user.firstName!);
+        await st.setUserEmail(result.data!.user.email!);
+        await st.setUserLastName(result.data!.user.lastName!);
       } catch (e) {
         debugPrint('Error during register token operations: $e');
       }

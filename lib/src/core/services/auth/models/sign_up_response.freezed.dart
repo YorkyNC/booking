@@ -22,6 +22,7 @@ SignUpResponse _$SignUpResponseFromJson(Map<String, dynamic> json) {
 mixin _$SignUpResponse {
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
+  UserEntity get user => throw _privateConstructorUsedError;
 
   /// Serializes this SignUpResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +40,9 @@ abstract class $SignUpResponseCopyWith<$Res> {
           SignUpResponse value, $Res Function(SignUpResponse) then) =
       _$SignUpResponseCopyWithImpl<$Res, SignUpResponse>;
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, UserEntity user});
+
+  $UserEntityCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -59,6 +62,7 @@ class _$SignUpResponseCopyWithImpl<$Res, $Val extends SignUpResponse>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? user = null,
   }) {
     return _then(_value.copyWith(
       accessToken: null == accessToken
@@ -69,7 +73,21 @@ class _$SignUpResponseCopyWithImpl<$Res, $Val extends SignUpResponse>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserEntity,
     ) as $Val);
+  }
+
+  /// Create a copy of SignUpResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserEntityCopyWith<$Res> get user {
+    return $UserEntityCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -81,7 +99,10 @@ abstract class _$$SignUpResponseImplCopyWith<$Res>
       __$$SignUpResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accessToken, String refreshToken});
+  $Res call({String accessToken, String refreshToken, UserEntity user});
+
+  @override
+  $UserEntityCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -99,6 +120,7 @@ class __$$SignUpResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? accessToken = null,
     Object? refreshToken = null,
+    Object? user = null,
   }) {
     return _then(_$SignUpResponseImpl(
       accessToken: null == accessToken
@@ -109,6 +131,10 @@ class __$$SignUpResponseImplCopyWithImpl<$Res>
           ? _value.refreshToken
           : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserEntity,
     ));
   }
 }
@@ -117,7 +143,9 @@ class __$$SignUpResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SignUpResponseImpl implements _SignUpResponse {
   const _$SignUpResponseImpl(
-      {required this.accessToken, required this.refreshToken});
+      {required this.accessToken,
+      required this.refreshToken,
+      required this.user});
 
   factory _$SignUpResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$SignUpResponseImplFromJson(json);
@@ -126,10 +154,12 @@ class _$SignUpResponseImpl implements _SignUpResponse {
   final String accessToken;
   @override
   final String refreshToken;
+  @override
+  final UserEntity user;
 
   @override
   String toString() {
-    return 'SignUpResponse(accessToken: $accessToken, refreshToken: $refreshToken)';
+    return 'SignUpResponse(accessToken: $accessToken, refreshToken: $refreshToken, user: $user)';
   }
 
   @override
@@ -140,12 +170,13 @@ class _$SignUpResponseImpl implements _SignUpResponse {
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
-                other.refreshToken == refreshToken));
+                other.refreshToken == refreshToken) &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
+  int get hashCode => Object.hash(runtimeType, accessToken, refreshToken, user);
 
   /// Create a copy of SignUpResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -167,7 +198,8 @@ class _$SignUpResponseImpl implements _SignUpResponse {
 abstract class _SignUpResponse implements SignUpResponse {
   const factory _SignUpResponse(
       {required final String accessToken,
-      required final String refreshToken}) = _$SignUpResponseImpl;
+      required final String refreshToken,
+      required final UserEntity user}) = _$SignUpResponseImpl;
 
   factory _SignUpResponse.fromJson(Map<String, dynamic> json) =
       _$SignUpResponseImpl.fromJson;
@@ -176,6 +208,8 @@ abstract class _SignUpResponse implements SignUpResponse {
   String get accessToken;
   @override
   String get refreshToken;
+  @override
+  UserEntity get user;
 
   /// Create a copy of SignUpResponse
   /// with the given fields replaced by the non-null parameter values.

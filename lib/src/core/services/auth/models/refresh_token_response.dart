@@ -1,3 +1,4 @@
+import 'package:booking/src/core/services/auth/models/user_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/base/base_models/base_entity.dart';
@@ -10,8 +11,8 @@ class RefreshTokenResponse extends BaseEntity with _$RefreshTokenResponse {
   const factory RefreshTokenResponse({
     required String accessToken,
     required String refreshToken,
+    required UserEntity user,
   }) = _RefreshTokenResponse;
 
-  factory RefreshTokenResponse.fromJson(Map<String, dynamic> json) =>
-      _$RefreshTokenResponseFromJson(json);
+  factory RefreshTokenResponse.fromJson(Map<String, dynamic> json) => _$RefreshTokenResponseFromJson(json);
 }

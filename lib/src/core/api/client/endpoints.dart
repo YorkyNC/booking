@@ -7,7 +7,7 @@ class EndPoints {
   static const login = "/v1/auth/authentication";
   static const logout = "/v1/auth/logout";
   static const verify = "/v1/auth/verify";
-  static const refreshToken = "/v1/auth/refresh-token";
+  static const refreshToken = "/v1/auth/refresh";
   static const forgotPassword = "/v1/auth/forgot-password";
   static const updatePassword = "/v1/auth/update-password";
   static const getUser = "/v1/auth/profile";

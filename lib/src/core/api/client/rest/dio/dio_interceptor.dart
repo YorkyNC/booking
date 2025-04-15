@@ -35,8 +35,7 @@ class DioInterceptor extends Interceptor {
   }
 
   @override
-  Future<void> onError(
-      DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     _log('Error Status Code: ${err.response?.statusCode}');
     _log('Error Response: ${err.response?.data}');
     if (err.response?.statusCode != 401) {
@@ -119,6 +118,10 @@ class DioInterceptor extends Interceptor {
         if (data.accessToken.isNotEmpty && data.refreshToken.isNotEmpty) {
           await st.setToken(data.accessToken);
           await st.setRefreshToken(data.refreshToken);
+          await st.setUserId(data.user.id!);
+          await st.setUserName(data.user.firstName!);
+          await st.setUserEmail(data.user.email!);
+          await st.setUserLastName(data.user.lastName!);
           // roleNotifier.notify();
 
           _log('Token refresh successful');
@@ -161,8 +164,7 @@ class DioInterceptor extends Interceptor {
     _queue.clear();
   }
 
-  Future<Response<dynamic>> _retryRequest(
-      RequestOptions requestOptions, String token) async {
+  Future<Response<dynamic>> _retryRequest(RequestOptions requestOptions, String token) async {
     final options = Options(
       method: requestOptions.method,
       headers: {
@@ -186,8 +188,7 @@ class DioInterceptor extends Interceptor {
     );
   }
 
-  Future<void> _handleRefreshFailure(
-      ErrorInterceptorHandler handler, DioException originalError) async {
+  Future<void> _handleRefreshFailure(ErrorInterceptorHandler handler, DioException originalError) async {
     _log('Token refresh failed, logging out user');
     await _logoutUser();
     _clearQueue();

@@ -11,6 +11,5 @@ class UpdatePasswordResponse extends BaseEntity with _$UpdatePasswordResponse {
     String? message,
   }) = _UpdatePasswordResponse;
 
-  factory UpdatePasswordResponse.fromJson(Map<String, dynamic> json) =>
-      _$UpdatePasswordResponseFromJson(json);
+  factory UpdatePasswordResponse.fromJson(Map<String, dynamic> json) => _$UpdatePasswordResponseFromJson(json);
 }

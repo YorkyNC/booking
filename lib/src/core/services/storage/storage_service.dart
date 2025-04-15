@@ -3,6 +3,20 @@ abstract class StorageService {
   Future<void> setClientId(String clientId);
   String? getClientId();
   // Quality methods
+  // Auth
+  Future<void> setUserId(int userId);
+  String? getUserId();
+  Future<void> deleteUserId();
+  Future<void> setUserName(String userName);
+  Future<void> setUserEmail(String userEmail);
+  String? getUserEmail();
+  Future<void> deleteUserEmail();
+  Future<void> setUserLastName(String lastName);
+  String? getUserLastName();
+  Future<void> deleteUserLastName();
+  Future<void> setUserFirstName(String firstName);
+  String? getUserFirstName();
+  Future<void> deleteUserFirstName();
 
   // Token and authentication methods
   Future<void> setToken(String? token);

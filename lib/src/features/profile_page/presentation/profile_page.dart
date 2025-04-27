@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/core/router/router.dart';
+import 'package:booking/src/core/services/storage/storage_service.dart';
+import 'package:booking/src/core/services/storage/storage_service_impl.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,12 +16,32 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Controllers for form fields
-  final TextEditingController _nameController = TextEditingController(text: 'Yerassyl');
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _surnameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController(text: 'beimbet.m04@gmail.com');
-  final TextEditingController _passwordController = TextEditingController(text: '12r"hdhhie83%v@_');
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  final StorageService _storage = StorageServiceImpl();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() {
+    final firstName = _storage.getUserFirstName();
+    final lastName = _storage.getUserLastName();
+    final email = _storage.getUserEmail();
+
+    setState(() {
+      _nameController.text = firstName ?? '';
+      _surnameController.text = lastName ?? '';
+      _emailController.text = email ?? '';
+      _passwordController.text = '********';
+    });
+  }
 
   @override
   void dispose() {

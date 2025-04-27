@@ -9,4 +9,6 @@ class SeatEvent with _$SeatEvent {
   const factory SeatEvent.getSeat(GetSeatRequest request) = _GetSeat;
 
   const factory SeatEvent.createReservation(CreateReservationRequest request) = _CreateReservation;
+
+  const factory SeatEvent.getHistory(GetHistoryRequest request) = _GetHistory;
 }

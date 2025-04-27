@@ -1,3 +1,5 @@
+import 'package:booking/src/features/history/domain/enum/entities/get_history_entity.dart';
+import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
@@ -41,9 +43,37 @@ class SeatRemoteImpl implements ISeatRemote {
   }
 
   @override
+  Future<Either<DomainException, GetHistoryEntity>> getHistory(GetHistoryRequest request) async {
+    final queryParameters = <String, dynamic>{
+      'userId': request.userId,
+    };
+    if (request.seatId != null) {
+      queryParameters['seatId'] = request.seatId;
+    }
+    final Either<DomainException, Response<dynamic>> response = await client.get(
+      'http://45.136.56.65:8000/rest/sdu/booking/reservations',
+      queryParameters: queryParameters,
+      options: Options(
+        headers: headers,
+      ),
+    );
+
+    return response.fold(
+      (error) => Left(error),
+      (result) async {
+        return Right(GetHistoryEntity.fromJson(result.data));
+      },
+    );
+  }
+
+  @override
   Future<Either<DomainException, GetAllSeatEntity>> getAllSeat(GetAllSeatRequest request) async {
-    final queryParameters = <String, dynamic>{};
-    queryParameters['floor'] = request.floor;
+    final queryParameters = <String, dynamic>{
+      'floor': request.floor,
+      'date': request.date,
+      'startTime': request.startTime,
+      'endTime': request.endTime,
+    };
     final Either<DomainException, Response<dynamic>> response = await client.get(
       'http://45.136.56.65:8000/rest/sdu/booking/seat/all',
       queryParameters: queryParameters,

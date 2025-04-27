@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,12 +17,10 @@ import '../models/add_attachment_response.dart';
 @LazySingleton(as: IAttachmentRepository)
 class AttachmentRepositoryImpl implements IAttachmentRepository {
   final IAttachmentRemote _attachmentImpl;
-  AttachmentRepositoryImpl(
-      @Named.from(AttachmentRemoteImpl) this._attachmentImpl);
+  AttachmentRepositoryImpl(@Named.from(AttachmentRemoteImpl) this._attachmentImpl);
 
   @override
-  Future<Either<DomainException, AddAttachmentResponse>> addAttachment(
-      AddAttachmentRequest file) async {
+  Future<Either<DomainException, AddAttachmentResponse>> addAttachment(AddAttachmentRequest file) async {
     try {
       final requests = await _attachmentImpl.addAttachment(file);
 
@@ -31,14 +31,13 @@ class AttachmentRepositoryImpl implements IAttachmentRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<DomainException, AttachmentEntity>> getAttachment(
-      GetAttachmentRequest request) async {
+  Future<Either<DomainException, AttachmentEntity>> getAttachment(GetAttachmentRequest request) async {
     try {
       final requests = await _attachmentImpl.getAttachment(request);
 
@@ -51,7 +50,7 @@ class AttachmentRepositoryImpl implements IAttachmentRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }

@@ -40,7 +40,7 @@ class _BookingPageState extends State<BookingPage> {
   final List<String> _endTimes = BookingDataExtractor.getEndTimes();
 
   final _formKey = GlobalKey<FormState>();
-  String? _selectedFloor = '0';
+  String? _selectedFloor;
   String? _selectedSector;
   DateTime? _selectedDate;
   String? _selectedStartTime;
@@ -61,13 +61,48 @@ class _BookingPageState extends State<BookingPage> {
     super.initState();
     _seatStatus = BookingDataExtractor.initializeSeatMap();
 
-    _selectedFloor = '0';
+    // Initialize default date and time values
+    _selectedDate = DateTime.now();
+    _dateController.text = DateFormat('dd-MM-yyyy').format(_selectedDate!);
+
+    // Default times (9:00 AM to 5:00 PM)
+    _selectedStartTime = '09:00';
+    _selectedEndTime = '17:00';
   }
 
   @override
   void dispose() {
     _dateController.dispose();
     super.dispose();
+  }
+
+  GetAllSeatRequest _createGetAllSeatRequest(String floorValue) {
+    final date = _selectedDate ?? DateTime.now();
+    final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
+    // Use default times if not selected
+    final startTimeStr = _selectedStartTime ?? '09:00';
+    final endTimeStr = _selectedEndTime ?? '17:00';
+
+    final startIsoString = _formatTimeAsIso8601(date, startTimeStr);
+    final endIsoString = _formatTimeAsIso8601(date, endTimeStr);
+
+    return GetAllSeatRequest(
+      floor: int.parse(floorValue),
+      date: formattedDate,
+      startTime: startIsoString,
+      endTime: endIsoString,
+    );
+  }
+
+  String _formatTimeAsIso8601(DateTime baseDate, String timeStr) {
+    final parts = timeStr.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+
+    final dateTime = DateTime(baseDate.year, baseDate.month, baseDate.day, hour, minute);
+
+    return dateTime.toIso8601String();
   }
 
   void _processSeatsData(List<SeatItemEntity> seats) {
@@ -80,31 +115,31 @@ class _BookingPageState extends State<BookingPage> {
       '2': 0,
     };
 
+    // Update available counts for each floor
     for (var seat in seats) {
       if (seat.status == SeatStatus.available) {
-        final floorKey = seat.floor.toString();
-        if (floorAvailableCounts.containsKey(floorKey)) {
-          floorAvailableCounts[floorKey] = (floorAvailableCounts[floorKey] ?? 0) + 1;
+        final floor = seat.floor.toString();
+        if (floorAvailableCounts.containsKey(floor)) {
+          floorAvailableCounts[floor] = (floorAvailableCounts[floor] ?? 0) + 1;
         }
       }
     }
 
-    floorAvailableCounts.forEach((key, value) {
-      debugPrint('Floor $key has $value available seats');
-    });
-    for (var floorData in _floorData) {
-      final floorId = floorData['id'].toString();
-      if (floorAvailableCounts.containsKey(floorId)) {
-        floorData['available'] = floorAvailableCounts[floorId] ?? 0;
-      }
+    // Update _floorData with new counts
+    for (var floor in _floorData) {
+      final floorId = floor['id'] as String;
+      floor['available'] = floorAvailableCounts[floorId] ?? 0;
     }
+
+    // Set initial floor if not set
+    if (_selectedFloor == null && _floorData.isNotEmpty) {
+      _selectedFloor = _floorData.first['id'];
+    }
+
     final currentFloorSeats =
         seats.where((seat) => seat.floor.toString() == _selectedFloor && seat.status == SeatStatus.available).toList();
 
-    debugPrint('Found ${currentFloorSeats.length} seats on floor $_selectedFloor');
     _loadSectorsForFloor(currentFloorSeats);
-
-    // Mark seats as processed
     _seatsProcessed = true;
   }
 
@@ -114,15 +149,11 @@ class _BookingPageState extends State<BookingPage> {
             seat.floor.toString() == _selectedFloor && seat.status == SeatStatus.available && seat.number.isNotEmpty)
         .toList();
 
-    debugPrint('Found ${seatsOnFloor.length} available seats on floor $_selectedFloor');
     final sectorSet = <String>{};
     for (var seat in seatsOnFloor) {
       sectorSet.add(seat.number.toUpperCase());
     }
 
-    debugPrint('Found ${sectorSet.length} unique sectors on floor $_selectedFloor');
-
-    // Create sector data for dropdown
     _sectorData = sectorSet.map((sector) {
       final available = seatsOnFloor.where((seat) => seat.number.toUpperCase() == sector.toUpperCase()).length;
 
@@ -134,8 +165,6 @@ class _BookingPageState extends State<BookingPage> {
     }).toList();
 
     _sectorData.sort((a, b) => a['id'].compareTo(b['id']));
-
-    debugPrint('Sectors available: ${_sectorData.map((s) => s['name']).join(', ')}');
   }
 
   // Update seat selection
@@ -183,11 +212,12 @@ class _BookingPageState extends State<BookingPage> {
     });
   }
 
-  void handleDateSelected(DateTime date) {
+  void handleDateSelected(DateTime date, SeatBloc bloc) {
     setState(() {
       _selectedDate = date;
       _dateController.text = DateFormat('dd-MM-yyyy').format(date);
     });
+    bloc.add(SeatEvent.getAll(_createGetAllSeatRequest(_selectedFloor!)));
   }
 
   void handleFloorChanged(String? value, SeatBloc bloc) {
@@ -199,20 +229,19 @@ class _BookingPageState extends State<BookingPage> {
       _seatsProcessed = false;
     });
 
-    bloc.add(SeatEvent.getAll(GetAllSeatRequest(floor: int.parse(value))));
-
+    bloc.add(SeatEvent.getAll(_createGetAllSeatRequest(value)));
     handleDeleteSeatSelection();
   }
 
   void handleSubmit() {
     final formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
-    final startDateTime = _combineDateAndTime(formattedDate, _selectedStartTime!);
-    final endDateTime = _combineDateAndTime(formattedDate, _selectedEndTime!);
+    final startIsoString = _formatTimeAsIso8601(_selectedDate!, _selectedStartTime!);
+    final endIsoString = _formatTimeAsIso8601(_selectedDate!, _selectedEndTime!);
 
     final CreateReservationRequest request = CreateReservationRequest(
       seatId: _selectedSeat!.id,
-      startTime: startDateTime,
-      endTime: endDateTime,
+      startTime: startIsoString,
+      endTime: endIsoString,
       date: formattedDate,
     );
 
@@ -317,29 +346,11 @@ class _BookingPageState extends State<BookingPage> {
     });
   }
 
-  // Helper method to combine date and time into ISO-8601 format
-  String _combineDateAndTime(String date, String timeStr) {
-    // Parse the time string (assuming format like "09:00")
-    final timeParts = timeStr.split(':');
-    final hour = int.parse(timeParts[0]);
-    final minute = int.parse(timeParts[1]);
-
-    // Parse the date string
-    final dateParts = date.split('-');
-    final year = int.parse(dateParts[0]);
-    final month = int.parse(dateParts[1]);
-    final day = int.parse(dateParts[2]);
-
-    // Create DateTime object and format as ISO-8601
-    final dateTime = DateTime(year, month, day, hour, minute);
-    return dateTime.toUtc().toIso8601String();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BaseBlocWidget<SeatBloc, SeatEvent, SeatState>(
       bloc: getIt<SeatBloc>(),
-      starterEvent: SeatEvent.getAll(GetAllSeatRequest(floor: _selectedFloor != null ? int.parse(_selectedFloor!) : 1)),
+      starterEvent: SeatEvent.getAll(_createGetAllSeatRequest(_selectedFloor ?? '1')),
       builder: (context, state, bloc) {
         return state.maybeWhen(
           orElse: () {
@@ -359,8 +370,7 @@ class _BookingPageState extends State<BookingPage> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      bloc.add(SeatEvent.getAll(
-                          GetAllSeatRequest(floor: _selectedFloor != null ? int.parse(_selectedFloor!) : 1)));
+                      bloc.add(SeatEvent.getAll(_createGetAllSeatRequest(_selectedFloor!)));
                     },
                     child: const Text('Retry'),
                   ),
@@ -452,7 +462,7 @@ class _BookingPageState extends State<BookingPage> {
                   context: context,
                   controller: _dateController,
                   selectedDate: _selectedDate,
-                  onDateSelected: handleDateSelected,
+                  onDateSelected: (date) => handleDateSelected(date, bloc),
                 ),
                 const SizedBox(height: 20),
                 const SectionHeader(text: 'Time Range'),
@@ -467,7 +477,6 @@ class _BookingPageState extends State<BookingPage> {
                   onStartTimeChanged: (value) {
                     setState(() {
                       _selectedStartTime = value;
-                      // Reset end time if needed
                       if (_selectedEndTime != null) {
                         final startIndex = _startTimes.indexOf(value!);
                         final endIndex = _endTimes.indexOf(_selectedEndTime!);
@@ -476,8 +485,12 @@ class _BookingPageState extends State<BookingPage> {
                         }
                       }
                     });
+                    bloc.add(SeatEvent.getAll(_createGetAllSeatRequest(_selectedFloor!)));
                   },
-                  onEndTimeChanged: (value) => setState(() => _selectedEndTime = value),
+                  onEndTimeChanged: (value) {
+                    setState(() => _selectedEndTime = value);
+                    bloc.add(SeatEvent.getAll(_createGetAllSeatRequest(_selectedFloor!)));
+                  },
                 ),
                 const SizedBox(height: 30),
                 const SectionHeader(text: 'Map'),
@@ -535,19 +548,23 @@ class _BookingPageState extends State<BookingPage> {
     if (filteredSeats.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            const Text('No available seats match your criteria'),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _selectedSector = null;
-                });
-              },
-              child: const Text('Show All Available Seats'),
-            ),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('No available seats match your criteria'),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedSector = null;
+                  });
+                },
+                child: const Text('Show All Available Seats'),
+              ),
+            ],
+          ),
         ),
       );
     }

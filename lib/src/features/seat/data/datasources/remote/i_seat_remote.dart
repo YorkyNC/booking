@@ -1,3 +1,5 @@
+import 'package:booking/src/features/history/domain/enum/entities/get_history_entity.dart';
+import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
@@ -18,5 +20,8 @@ abstract class ISeatRemote {
   );
   Future<Either<DomainException, CreateReservationEntity>> createReservation(
     CreateReservationRequest request,
+  );
+  Future<Either<DomainException, GetHistoryEntity>> getHistory(
+    GetHistoryRequest request,
   );
 }

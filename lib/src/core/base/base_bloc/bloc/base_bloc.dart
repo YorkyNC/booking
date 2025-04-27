@@ -1,10 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../utils/loggers/logger.dart';
 import '../context/context_activity_bloc.dart';
 
 abstract class BaseBloc<E, S> extends Bloc<E, S> {
-
   BaseBloc(S initialState) : super(initialState) {
     on<E>(onEventHandler);
   }
@@ -18,7 +18,7 @@ abstract class BaseBloc<E, S> extends Bloc<E, S> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    Log.e('BlocError: ${error.toString()}');
+    log('BlocError: ${error.toString()}');
     super.onError(error, stackTrace);
   }
 }

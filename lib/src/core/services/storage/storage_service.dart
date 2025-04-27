@@ -5,7 +5,7 @@ abstract class StorageService {
   // Quality methods
   // Auth
   Future<void> setUserId(int userId);
-  String? getUserId();
+  int? getUserId();
   Future<void> deleteUserId();
   Future<void> setUserName(String userName);
   Future<void> setUserEmail(String userEmail);

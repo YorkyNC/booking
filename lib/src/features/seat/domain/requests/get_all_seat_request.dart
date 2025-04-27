@@ -9,6 +9,9 @@ part 'get_all_seat_request.g.dart';
 class GetAllSeatRequest with _$GetAllSeatRequest {
   const factory GetAllSeatRequest({
     required int floor,
+    required String date,
+    required String startTime,
+    required String endTime,
   }) = _GetAllSeatRequest;
 
   factory GetAllSeatRequest.fromJson(Map<String, dynamic> json) => _$GetAllSeatRequestFromJson(json);

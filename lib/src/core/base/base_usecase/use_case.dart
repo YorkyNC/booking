@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fpdart/fpdart.dart';
 
 import '../../exceptions/domain_exception.dart';
@@ -35,8 +37,8 @@ abstract class UseCase<R, Request> {
 
     return result.fold(
       (DomainException error) {
-        Log.e(
-          error,
+        log(
+          error.toString(),
           stackTrace: error.stackTrace,
         );
         return Result.failure(error);
@@ -63,8 +65,8 @@ abstract class NoneInputBoundaryUseCase<R> {
 
     return result.fold(
       (DomainException error) {
-        Log.e(
-          error,
+        log(
+          error.toString(),
           stackTrace: error.stackTrace,
         );
         return Result.failure(error);
@@ -96,8 +98,8 @@ abstract class NoneOutputBoundaryUseCase<Request extends BaseRequest> {
         await execute(requestModel);
     return result.fold(
       (DomainException error) {
-        Log.e(
-          error,
+        log(
+          error.toString(),
           stackTrace: error.stackTrace,
         );
         return Result.failure(error);
@@ -122,8 +124,8 @@ abstract class NoneInputOutputBoundaryUseCase {
         await execute();
     return result.fold(
       (DomainException error) {
-        Log.e(
-          error,
+        log(
+          error.toString(),
           stackTrace: error.stackTrace,
         );
         return Result.failure(error);
@@ -141,8 +143,8 @@ abstract class BaseStreamUseCase<R, Request extends BaseRequest> {
     yield* stream.map((Either<DomainException, R> result) {
       return result.fold(
         (DomainException error) {
-          Log.e(
-            error,
+          log(
+            error.toString(),
             stackTrace: error.stackTrace,
           );
           return Result.failure(error);
@@ -161,8 +163,8 @@ abstract class NoneInputStreamUseCase<R> {
     yield* stream.map((Either<DomainException, R> result) {
       return result.fold(
         (DomainException error) {
-          Log.e(
-            error,
+          log(
+            error.toString(),
             stackTrace: error.stackTrace,
           );
           return Result.failure(error);

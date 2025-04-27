@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:booking/src/core/services/auth/entities/user_entity.dart';
 import 'package:booking/src/core/services/auth/models/sign_in_response.dart';
 import 'package:booking/src/core/services/auth/models/sign_up_request.dart';
@@ -13,7 +15,6 @@ import '../../../../core/services/auth/i_auth_service.dart';
 import '../../../../core/services/auth/models/forgot_password_response.dart';
 import '../../../../core/services/auth/models/models.dart';
 import '../../../../core/services/auth/models/refresh_token_response.dart';
-import '../../../../core/utils/loggers/logger.dart';
 import '../../data/repositories/i_auth_repository.dart';
 
 @named
@@ -82,7 +83,7 @@ class AuthRepositoryImpl implements IAuthRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
@@ -101,7 +102,7 @@ class AuthRepositoryImpl implements IAuthRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
@@ -117,7 +118,7 @@ class AuthRepositoryImpl implements IAuthRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
@@ -129,7 +130,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       return requests.fold(
         (error) => Left(error),
         (response) {
-          Log.i(response);
+          log(response.toString());
           final UpdatePasswordResponse result = UpdatePasswordResponse(
             message: response.message,
           );
@@ -137,7 +138,7 @@ class AuthRepositoryImpl implements IAuthRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }

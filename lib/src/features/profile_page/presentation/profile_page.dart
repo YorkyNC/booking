@@ -225,14 +225,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _handleSignOut(BuildContext context) async {
     try {
-      await st.clear();
+      // Clear all storage data
+      await st.clearAll();
+
+      // Delete tokens explicitly
+      await st.deleteToken();
+      await st.deleteRefreshToken();
+
+      // Clear user data
+      await st.deleteUserId();
+      await st.deleteUserEmail();
+      await st.deleteUserFirstName();
+      await st.deleteUserLastName();
 
       if (context.mounted) {
         context.go(RoutePaths.welcome);
       }
     } catch (e) {
       log('Error during sign out: $e', name: 'SignOutButton');
-      await st.clear();
+      // Try to clear everything again in case of error
+      await st.clearAll();
       if (context.mounted) {
         context.go(RoutePaths.login);
       }

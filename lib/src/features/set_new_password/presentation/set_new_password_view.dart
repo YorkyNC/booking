@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
@@ -90,7 +92,7 @@ class _SetNewPasswordViewState extends State<SetNewPasswordView> {
             setState(() {
               isLoading = false;
             });
-            Log.e('Password changed');
+            log('Password changed');
             pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
           },
         );

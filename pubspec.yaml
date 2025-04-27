@@ -97,7 +97,7 @@ dependencies:
   responsive_framework: ^1.0.0
   rxdart: ^0.27.7
   scroll_to_index: ^3.0.1
-  sentry_flutter: ^8.9.0
+  # sentry_flutter: ^8.14.2
   shared_preferences: ^2.3.3
   shimmer: ^3.0.0
   showcaseview: ^2.0.0+1

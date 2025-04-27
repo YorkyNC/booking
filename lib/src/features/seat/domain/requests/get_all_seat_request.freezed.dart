@@ -21,6 +21,9 @@ GetAllSeatRequest _$GetAllSeatRequestFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$GetAllSeatRequest {
   int get floor => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
+  String get startTime => throw _privateConstructorUsedError;
+  String get endTime => throw _privateConstructorUsedError;
 
   /// Serializes this GetAllSeatRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +41,7 @@ abstract class $GetAllSeatRequestCopyWith<$Res> {
           GetAllSeatRequest value, $Res Function(GetAllSeatRequest) then) =
       _$GetAllSeatRequestCopyWithImpl<$Res, GetAllSeatRequest>;
   @useResult
-  $Res call({int floor});
+  $Res call({int floor, String date, String startTime, String endTime});
 }
 
 /// @nodoc
@@ -57,12 +60,27 @@ class _$GetAllSeatRequestCopyWithImpl<$Res, $Val extends GetAllSeatRequest>
   @override
   $Res call({
     Object? floor = null,
+    Object? date = null,
+    Object? startTime = null,
+    Object? endTime = null,
   }) {
     return _then(_value.copyWith(
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
               as int,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -75,7 +93,7 @@ abstract class _$$GetAllSeatRequestImplCopyWith<$Res>
       __$$GetAllSeatRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int floor});
+  $Res call({int floor, String date, String startTime, String endTime});
 }
 
 /// @nodoc
@@ -92,12 +110,27 @@ class __$$GetAllSeatRequestImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? floor = null,
+    Object? date = null,
+    Object? startTime = null,
+    Object? endTime = null,
   }) {
     return _then(_$GetAllSeatRequestImpl(
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
               as int,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -105,17 +138,27 @@ class __$$GetAllSeatRequestImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GetAllSeatRequestImpl implements _GetAllSeatRequest {
-  const _$GetAllSeatRequestImpl({required this.floor});
+  const _$GetAllSeatRequestImpl(
+      {required this.floor,
+      required this.date,
+      required this.startTime,
+      required this.endTime});
 
   factory _$GetAllSeatRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetAllSeatRequestImplFromJson(json);
 
   @override
   final int floor;
+  @override
+  final String date;
+  @override
+  final String startTime;
+  @override
+  final String endTime;
 
   @override
   String toString() {
-    return 'GetAllSeatRequest(floor: $floor)';
+    return 'GetAllSeatRequest(floor: $floor, date: $date, startTime: $startTime, endTime: $endTime)';
   }
 
   @override
@@ -123,12 +166,16 @@ class _$GetAllSeatRequestImpl implements _GetAllSeatRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetAllSeatRequestImpl &&
-            (identical(other.floor, floor) || other.floor == floor));
+            (identical(other.floor, floor) || other.floor == floor) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, floor);
+  int get hashCode => Object.hash(runtimeType, floor, date, startTime, endTime);
 
   /// Create a copy of GetAllSeatRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -148,14 +195,23 @@ class _$GetAllSeatRequestImpl implements _GetAllSeatRequest {
 }
 
 abstract class _GetAllSeatRequest implements GetAllSeatRequest {
-  const factory _GetAllSeatRequest({required final int floor}) =
-      _$GetAllSeatRequestImpl;
+  const factory _GetAllSeatRequest(
+      {required final int floor,
+      required final String date,
+      required final String startTime,
+      required final String endTime}) = _$GetAllSeatRequestImpl;
 
   factory _GetAllSeatRequest.fromJson(Map<String, dynamic> json) =
       _$GetAllSeatRequestImpl.fromJson;
 
   @override
   int get floor;
+  @override
+  String get date;
+  @override
+  String get startTime;
+  @override
+  String get endTime;
 
   /// Create a copy of GetAllSeatRequest
   /// with the given fields replaced by the non-null parameter values.

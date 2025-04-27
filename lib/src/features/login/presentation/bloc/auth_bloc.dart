@@ -234,7 +234,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     final Result<ForgotPasswordResponse, DomainException> result = await _forgotPasswordUseCase.call(request);
 
     if (result.data == null) {
-      Log.e('Password reset sent to email');
+      log('Password reset sent to email');
     }
 
     return emit(AuthState.loaded(viewModel: _viewModel));

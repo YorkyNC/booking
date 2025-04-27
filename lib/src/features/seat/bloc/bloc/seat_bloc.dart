@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:booking/src/features/history/domain/enum/entities/get_history_entity.dart';
+import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
+import 'package:booking/src/features/history/domain/use_case/get_history_use_case.dart';
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
@@ -25,11 +28,13 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
     this.getAllSeatUseCase,
     this.getSeatUseCase,
     this.createReservationUseCase,
+    this.getHistoryUseCase,
   ) : super(const SeatState.loading());
 
   final GetAllSeatUseCase getAllSeatUseCase;
   final GetSeatUseCase getSeatUseCase;
   final CreateReservationUseCase createReservationUseCase;
+  final GetHistoryUseCase getHistoryUseCase;
   SeatViewModel _viewModel = const SeatViewModel();
 
   @override
@@ -46,6 +51,10 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
       ),
       createReservation: (request) => _createReservation(
         event as _CreateReservation,
+        emit as Emitter<SeatState>,
+      ),
+      getHistory: (request) => _getHistory(
+        event as _GetHistory,
         emit as Emitter<SeatState>,
       ),
     );
@@ -101,6 +110,19 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
             seat: data,
           ),
         ),
+      );
+    }
+
+    return emit(SeatState.error(result.failure!.message));
+  }
+
+  Future<void> _getHistory(_GetHistory event, Emitter emit) async {
+    final Result<GetHistoryList, DomainException> result = await getHistoryUseCase.call(event.request);
+
+    if (result.isSuccessful) {
+      _viewModel = _viewModel.copyWith(history: result.data);
+      return emit(
+        _Loaded(viewModel: _viewModel.copyWith(history: result.data)),
       );
     }
 

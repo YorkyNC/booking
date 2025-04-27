@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
@@ -74,8 +76,8 @@ class _LoginPageState extends State<LoginPage> {
     storageService.setToken(token);
     storageService.setRefreshToken(refreshToken);
 
-    Log.e(token);
-    Log.e(storageService.getRefreshToken()!);
+    log(token);
+    log(storageService.getRefreshToken()!);
 
     LoginSuccessDialog.show(
       context,

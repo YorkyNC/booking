@@ -1,6 +1,5 @@
 import 'package:booking/src/app/application.dart';
 import 'package:booking/src/core/services/auth/connection_notifier.dart';
-import 'package:booking/src/core/services/firebase/firebase_manager.dart';
 import 'package:provider/provider.dart' as p;
 
 import 'src/app/imports.dart';
@@ -21,7 +20,7 @@ void main() async {
   debugPrint('Initial client ID from storage: ${storageService.getClientId()}');
 
   await configureDependencies();
-  await FirebaseManager.initialize();
+  // await FirebaseManager.initialize();
 
   // Initialize chat service
   // await ChatService.initializeChat();

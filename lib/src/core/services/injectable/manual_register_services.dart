@@ -3,6 +3,8 @@ import 'package:booking/src/core/services/auth/i_auth_service.dart';
 import 'package:booking/src/core/services/injectable/service_register_proxy.dart';
 import 'package:booking/src/core/services/storage/storage_service.dart';
 import 'package:booking/src/core/services/storage/storage_service_impl.dart';
+import 'package:booking/src/features/history/domain/use_case/get_history_use_case.dart';
+import 'package:booking/src/features/history/presentation/bloc/history_bloc.dart';
 import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
 import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
@@ -92,6 +94,13 @@ void manualRegisterServices() {
       getIt<GetAllSeatUseCase>(),
       getIt<GetSeatUseCase>(),
       getIt<CreateReservationUseCase>(),
+      getIt<GetHistoryUseCase>(),
+    ),
+  );
+  getIt.registerBloc<HistoryBloc>(
+    factory: true,
+    () => HistoryBloc(
+      getIt<GetHistoryUseCase>(),
     ),
   );
 

@@ -22,12 +22,20 @@ class BookingDataExtractor {
 
   /// Extracts available start times for the booking
   static List<String> getStartTimes() {
-    return ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+    final List<String> times = [];
+    for (int hour = 0; hour < 24; hour++) {
+      times.add('${hour.toString().padLeft(2, '0')}:00');
+    }
+    return times;
   }
 
   /// Extracts available end times for the booking
   static List<String> getEndTimes() {
-    return ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+    final List<String> times = [];
+    for (int hour = 1; hour <= 24; hour++) {
+      times.add('${hour.toString().padLeft(2, '0')}:00');
+    }
+    return times;
   }
 
   /// Initializes the seat map data with default values and reserved seats

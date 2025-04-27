@@ -114,7 +114,7 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
   }
 
   @override
-  String? getUserId() {
+  int? getUserId() {
     try {
       final userId = authBox.get(_idKey);
       debugPrint('Retrieved user ID: $userId');
@@ -259,19 +259,35 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
     }
   }
 
-  // Interface compatibility method - only clears auth data
+  // Interface compatibility method - clears all data
   @override
   Future<void> clear() async {
-    if (authBox.isOpen) {
-      await authBox.clear();
-      notifyListeners();
-    }
+    await clearAll();
   }
 
   // Clear all data
   Future<void> clearAll() async {
-    await clearAuth();
-    await clearDeviceData();
+    try {
+      // Clear auth data
+      if (authBox.isOpen) {
+        await authBox.clear();
+      }
+
+      // Clear device data
+      if (deviceBox.isOpen) {
+        _cachedLastSentFcmToken = null;
+        await deviceBox.clear();
+      }
+
+      // Reset cached values
+      _initializeCachedValues();
+
+      // Notify listeners
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error clearing storage: $e');
+      rethrow;
+    }
   }
 
   // Initialization methods

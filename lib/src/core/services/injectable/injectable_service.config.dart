@@ -43,6 +43,16 @@ import 'package:booking/src/features/events/presentation/bloc/events_bloc.dart'
     as _i264;
 import 'package:booking/src/features/feedback/presentation/bloc/feedback_bloc.dart'
     as _i264;
+import 'package:booking/src/features/history/data/datasources/remote/history_remote_impl.dart'
+    as _i980;
+import 'package:booking/src/features/history/data/datasources/remote/i_history_remote.dart'
+    as _i184;
+import 'package:booking/src/features/history/data/repositories/history_repository_impl.dart'
+    as _i592;
+import 'package:booking/src/features/history/domain/enum/repositories/i_history_repository.dart'
+    as _i654;
+import 'package:booking/src/features/history/domain/use_case/get_history_use_case.dart'
+    as _i959;
 import 'package:booking/src/features/login/data/repositories/i_auth_repository.dart'
     as _i385;
 import 'package:booking/src/features/login/domain/repositories/auth_repository_impl.dart'
@@ -79,6 +89,8 @@ import 'package:booking/src/features/seat/domain/usecases/create_reservation_use
     as _i213;
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart'
     as _i888;
+import 'package:booking/src/features/seat/domain/usecases/get_history_use_case.dart'
+    as _i7;
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart'
     as _i1013;
 import 'package:booking/src/features/settings/domain/usecases/change_password.dart'
@@ -126,6 +138,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i136.AttachmentRemoteImpl(),
       instanceName: 'AttachmentRemoteImpl',
     );
+    gh.lazySingleton<_i184.IHistoryRemote>(
+      () => _i980.HistoryRemoteImpl(),
+      instanceName: 'HistoryRemoteImpl',
+    );
     gh.lazySingleton<_i434.ISeatRemote>(
       () => _i348.SeatRemoteImpl(),
       instanceName: 'SeatRemoteImpl',
@@ -164,6 +180,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i994.AddAttachmentUseCase>(() =>
         _i994.AddAttachmentUseCase(gh<_i140.IAttachmentRepository>(
             instanceName: 'AttachmentRepositoryImpl')));
+    gh.lazySingleton<_i654.IHistoryRepository>(
+      () => _i592.HistoryRepositoryImpl(
+          gh<_i184.IHistoryRemote>(instanceName: 'HistoryRemoteImpl')),
+      instanceName: 'HistoryRepositoryImpl',
+    );
     gh.lazySingleton<_i385.IAuthRepository>(
       () => _i737.AuthRepositoryImpl(
           gh<_i610.IAuthService>(instanceName: 'AuthServiceImpl')),
@@ -171,16 +192,20 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1013.GetSeatUseCase>(() => _i1013.GetSeatUseCase(
         gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
-    gh.lazySingleton<_i888.GetAllSeatUseCase>(() => _i888.GetAllSeatUseCase(
-        gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i213.CreateReservationUseCase>(() =>
         _i213.CreateReservationUseCase(
             gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
+    gh.lazySingleton<_i888.GetAllSeatUseCase>(() => _i888.GetAllSeatUseCase(
+        gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
+    gh.lazySingleton<_i7.GetHistoryUseCase>(() => _i7.GetHistoryUseCase(
+        gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i568.GetUserUseCase>(() => _i568.GetUserUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
     gh.lazySingleton<_i1056.VerifyUseCase>(() => _i1056.VerifyUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
     gh.lazySingleton<_i134.RefreshTokenUseCase>(() => _i134.RefreshTokenUseCase(
+        gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
+    gh.lazySingleton<_i676.RegisterUseCase>(() => _i676.RegisterUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
     gh.lazySingleton<_i785.LoginUseCase>(() => _i785.LoginUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
@@ -190,8 +215,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i20.ForgotPasswordUseCase>(() =>
         _i20.ForgotPasswordUseCase(
             gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
-    gh.lazySingleton<_i676.RegisterUseCase>(() => _i676.RegisterUseCase(
-        gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
+    gh.lazySingleton<_i959.GetHistoryUseCase>(() => _i959.GetHistoryUseCase(
+        gh<_i654.IHistoryRepository>(instanceName: 'HistoryRepositoryImpl')));
     return this;
   }
 }

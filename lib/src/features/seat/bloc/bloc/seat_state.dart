@@ -15,5 +15,6 @@ class SeatViewModel with _$SeatViewModel {
     GetAllSeatEntity? allSeat,
     SeatItemEntity? seat,
     CreateReservationEntity? reservation,
+    GetHistoryList? history,
   }) = _SeatViewModel;
 }

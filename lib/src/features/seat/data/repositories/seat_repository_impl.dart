@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:booking/src/features/history/domain/enum/entities/get_history_entity.dart';
+import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
@@ -31,7 +35,24 @@ class SeatRepositoryImpl implements ISeatRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
+      return Left(UnknownException(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<DomainException, GetHistoryEntity>> getHistory(GetHistoryRequest request) async {
+    try {
+      final requests = await _seatImpl.getHistory(request);
+
+      return requests.fold(
+        (error) => Left(error),
+        (result) {
+          return Right(result);
+        },
+      );
+    } catch (e) {
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
@@ -50,7 +71,7 @@ class SeatRepositoryImpl implements ISeatRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }
@@ -67,7 +88,7 @@ class SeatRepositoryImpl implements ISeatRepository {
         },
       );
     } catch (e) {
-      Log.e(e);
+      log(e.toString());
       return Left(UnknownException(message: e.toString()));
     }
   }

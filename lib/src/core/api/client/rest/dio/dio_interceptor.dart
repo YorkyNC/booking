@@ -61,6 +61,7 @@ class DioInterceptor extends Interceptor {
   }
 
   Future<String?> _refreshTokenAndGetNew(RequestOptions requestOptions) async {
+    log('Starting token refresh process', name: 'DioInterceptor');
     // Add request to queue
     final completer = Completer<Response>();
     _queue.add(QueueItem(requestOptions, completer));
@@ -69,20 +70,25 @@ class DioInterceptor extends Interceptor {
       if (!_isRefreshing) {
         _isRefreshing = true;
         _refreshCompleter = Completer<String>();
+        log('Initiating token refresh', name: 'DioInterceptor');
 
         final refreshed = await _refreshToken();
         if (refreshed) {
           final newToken = st.getToken();
+          log('Token refresh successful. New token: ${newToken?.substring(0, 20)}...', name: 'DioInterceptor');
           _refreshCompleter?.complete(newToken);
           return newToken;
         } else {
+          log('Token refresh failed', name: 'DioInterceptor');
           _refreshCompleter?.completeError('Refresh failed');
           return null;
         }
       } else {
+        log('Token refresh already in progress, waiting for completion', name: 'DioInterceptor');
         return await _refreshCompleter?.future;
       }
     } catch (e) {
+      log('Error during token refresh: $e', name: 'DioInterceptor');
       _refreshCompleter?.completeError(e);
       rethrow;
     } finally {
@@ -95,13 +101,15 @@ class DioInterceptor extends Interceptor {
 
   Future<bool> _refreshToken() async {
     final String? refreshToken = st.getRefreshToken();
+    log('Current refresh token: ${refreshToken?.substring(0, 20)}...', name: 'DioInterceptor');
+
     if (refreshToken == null) {
-      _log('No refresh token available.');
+      log('No refresh token available.', name: 'DioInterceptor');
       return false;
     }
 
     try {
-      _log('Attempting token refresh');
+      log('Attempting token refresh request', name: 'DioInterceptor');
       final response = await dio.post(
         EndPoints.baseUrl + EndPoints.refreshToken,
         data: {"refreshToken": refreshToken},
@@ -113,26 +121,27 @@ class DioInterceptor extends Interceptor {
         ),
       );
 
+      log('Token refresh response status: ${response.statusCode}', name: 'DioInterceptor');
       if (response.statusCode == 200 && response.data != null) {
         final data = RefreshTokenResponse.fromJson(response.data);
         if (data.accessToken.isNotEmpty && data.refreshToken.isNotEmpty) {
+          log('Storing new tokens and user data', name: 'DioInterceptor');
           await st.setToken(data.accessToken);
           await st.setRefreshToken(data.refreshToken);
           await st.setUserId(data.user.id!);
           await st.setUserName(data.user.firstName!);
           await st.setUserEmail(data.user.email!);
           await st.setUserLastName(data.user.lastName!);
-          // roleNotifier.notify();
 
-          _log('Token refresh successful');
+          log('Token refresh successful', name: 'DioInterceptor');
           return true;
         }
       }
 
-      _log('Invalid response during token refresh: ${response.statusCode}');
+      log('Invalid response during token refresh: ${response.statusCode}', name: 'DioInterceptor');
       return false;
     } catch (e) {
-      _log('Token refresh failed with error: $e');
+      log('Token refresh failed with error: $e', name: 'DioInterceptor');
       return false;
     }
   }

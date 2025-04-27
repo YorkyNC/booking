@@ -22,7 +22,6 @@ mixin _$ClassEventsState {
   String get searchQuery => throw _privateConstructorUsedError;
   int get sortColumnIndex => throw _privateConstructorUsedError;
   bool get sortAscending => throw _privateConstructorUsedError;
-  List<StudentEntity>? get students => throw _privateConstructorUsedError;
 
   /// Create a copy of ClassEventsState
   /// with the given fields replaced by the non-null parameter values.
@@ -43,8 +42,7 @@ abstract class $ClassEventsStateCopyWith<$Res> {
       bool isSearching,
       String searchQuery,
       int sortColumnIndex,
-      bool sortAscending,
-      List<StudentEntity>? students});
+      bool sortAscending});
 }
 
 /// @nodoc
@@ -68,7 +66,6 @@ class _$ClassEventsStateCopyWithImpl<$Res, $Val extends ClassEventsState>
     Object? searchQuery = null,
     Object? sortColumnIndex = null,
     Object? sortAscending = null,
-    Object? students = freezed,
   }) {
     return _then(_value.copyWith(
       classes: freezed == classes
@@ -95,10 +92,6 @@ class _$ClassEventsStateCopyWithImpl<$Res, $Val extends ClassEventsState>
           ? _value.sortAscending
           : sortAscending // ignore: cast_nullable_to_non_nullable
               as bool,
-      students: freezed == students
-          ? _value.students
-          : students // ignore: cast_nullable_to_non_nullable
-              as List<StudentEntity>?,
     ) as $Val);
   }
 }
@@ -117,8 +110,7 @@ abstract class _$$ClassEventsStateImplCopyWith<$Res>
       bool isSearching,
       String searchQuery,
       int sortColumnIndex,
-      bool sortAscending,
-      List<StudentEntity>? students});
+      bool sortAscending});
 }
 
 /// @nodoc
@@ -140,7 +132,6 @@ class __$$ClassEventsStateImplCopyWithImpl<$Res>
     Object? searchQuery = null,
     Object? sortColumnIndex = null,
     Object? sortAscending = null,
-    Object? students = freezed,
   }) {
     return _then(_$ClassEventsStateImpl(
       classes: freezed == classes
@@ -167,10 +158,6 @@ class __$$ClassEventsStateImplCopyWithImpl<$Res>
           ? _value.sortAscending
           : sortAscending // ignore: cast_nullable_to_non_nullable
               as bool,
-      students: freezed == students
-          ? _value._students
-          : students // ignore: cast_nullable_to_non_nullable
-              as List<StudentEntity>?,
     ));
   }
 }
@@ -184,11 +171,9 @@ class _$ClassEventsStateImpl implements _ClassEventsState {
       this.isSearching = false,
       this.searchQuery = '',
       this.sortColumnIndex = -1,
-      this.sortAscending = true,
-      final List<StudentEntity>? students})
+      this.sortAscending = true})
       : _classes = classes,
-        _filteredClasses = filteredClasses,
-        _students = students;
+        _filteredClasses = filteredClasses;
 
   final List<ClassEntity>? _classes;
   @override
@@ -222,19 +207,10 @@ class _$ClassEventsStateImpl implements _ClassEventsState {
   @override
   @JsonKey()
   final bool sortAscending;
-  final List<StudentEntity>? _students;
-  @override
-  List<StudentEntity>? get students {
-    final value = _students;
-    if (value == null) return null;
-    if (_students is EqualUnmodifiableListView) return _students;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
 
   @override
   String toString() {
-    return 'ClassEventsState(classes: $classes, filteredClasses: $filteredClasses, isSearching: $isSearching, searchQuery: $searchQuery, sortColumnIndex: $sortColumnIndex, sortAscending: $sortAscending, students: $students)';
+    return 'ClassEventsState(classes: $classes, filteredClasses: $filteredClasses, isSearching: $isSearching, searchQuery: $searchQuery, sortColumnIndex: $sortColumnIndex, sortAscending: $sortAscending)';
   }
 
   @override
@@ -252,8 +228,7 @@ class _$ClassEventsStateImpl implements _ClassEventsState {
             (identical(other.sortColumnIndex, sortColumnIndex) ||
                 other.sortColumnIndex == sortColumnIndex) &&
             (identical(other.sortAscending, sortAscending) ||
-                other.sortAscending == sortAscending) &&
-            const DeepCollectionEquality().equals(other._students, _students));
+                other.sortAscending == sortAscending));
   }
 
   @override
@@ -264,8 +239,7 @@ class _$ClassEventsStateImpl implements _ClassEventsState {
       isSearching,
       searchQuery,
       sortColumnIndex,
-      sortAscending,
-      const DeepCollectionEquality().hash(_students));
+      sortAscending);
 
   /// Create a copy of ClassEventsState
   /// with the given fields replaced by the non-null parameter values.
@@ -284,8 +258,7 @@ abstract class _ClassEventsState implements ClassEventsState {
       final bool isSearching,
       final String searchQuery,
       final int sortColumnIndex,
-      final bool sortAscending,
-      final List<StudentEntity>? students}) = _$ClassEventsStateImpl;
+      final bool sortAscending}) = _$ClassEventsStateImpl;
 
   @override
   List<ClassEntity>? get classes;
@@ -299,8 +272,6 @@ abstract class _ClassEventsState implements ClassEventsState {
   int get sortColumnIndex;
   @override
   bool get sortAscending;
-  @override
-  List<StudentEntity>? get students;
 
   /// Create a copy of ClassEventsState
   /// with the given fields replaced by the non-null parameter values.

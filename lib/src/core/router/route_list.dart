@@ -299,19 +299,7 @@ List<RouteBase> _routes = [
       );
     },
   ),
-  GoRoute(
-    path: RoutePaths.studentsList,
-    pageBuilder: (context, state) {
-      final data = state.extra as Map<String, dynamic>;
-      return getPage(
-        child: ClassStudentsListPage(
-          className: data['className'],
-          studentsCount: data['studentsCount'],
-        ),
-        state: state,
-      );
-    },
-  ),
+
   GoRoute(
     path: RoutePaths.classesList,
     pageBuilder: (context, state) {

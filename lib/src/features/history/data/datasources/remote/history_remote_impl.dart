@@ -52,8 +52,7 @@ class HistoryRemoteImpl implements IHistoryRemote {
           return Right(GetHistoryList(bookings: bookings));
         }
         // If it's not a list, wrap the single item in a list
-        final booking = GetHistoryEntity.fromJson(result.data);
-        return Right(GetHistoryList(bookings: [booking]));
+        return Right(GetHistoryList(bookings: [GetHistoryEntity.fromJson(result.data)]));
       },
     );
   }

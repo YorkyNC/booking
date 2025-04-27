@@ -10,6 +10,8 @@ import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
+import 'package:booking/src/features/student/domain/usecases/get_stat_use_case.dart';
+import 'package:booking/src/features/student/presentation/bloc/stat_bloc.dart';
 import 'package:dio/dio.dart';
 
 import '../../../features/login/domain/usecases/forgot_password_use_case.dart';
@@ -103,7 +105,12 @@ void manualRegisterServices() {
       getIt<GetHistoryUseCase>(),
     ),
   );
-
+  getIt.registerBloc<StatBloc>(
+    factory: true,
+    () => StatBloc(
+      getIt<GetStatUseCase>(),
+    ),
+  );
   // Register Storage Service
   getIt.registerLazySingleton<StorageService>(() => StorageServiceImpl());
 

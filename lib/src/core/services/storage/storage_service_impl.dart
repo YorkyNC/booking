@@ -60,6 +60,7 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
 
   @override
   Future<void> setUserId(int userId) async {
+    log('Setting user ID: $userId', name: 'StorageService');
     try {
       await authBox.put(_idKey, userId);
       debugPrint('User ID saved successfully: $userId');
@@ -117,10 +118,10 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
   int? getUserId() {
     try {
       final userId = authBox.get(_idKey);
-      debugPrint('Retrieved user ID: $userId');
+      log('Retrieved user ID: $userId', name: 'StorageService');
       return userId;
     } catch (e) {
-      debugPrint('Error getting user ID: $e');
+      log('Error getting user ID: $e', name: 'StorageService');
       return null;
     }
   }
@@ -187,7 +188,7 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
   // Auth-related methods
   @override
   Future<void> setToken(String? token) async {
-    log('$token', name: 'ACCESS_TOKEN');
+    log('Setting access token: ${token?.substring(0, 20)}...', name: 'StorageService');
     await authBox.put(_tokenKey, token);
     notifyListeners();
   }
@@ -201,7 +202,7 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
 
   @override
   Future<void> setRefreshToken(String? refreshToken) async {
-    log('$refreshToken', name: 'REFRESH_TOKEN');
+    log('Setting refresh token: ${refreshToken?.substring(0, 20)}...', name: 'StorageService');
     await authBox.put(_refreshTokenKey, refreshToken);
     notifyListeners();
   }
@@ -213,7 +214,9 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
 
   @override
   String? getToken() {
-    return authBox.get(_tokenKey);
+    final token = authBox.get(_tokenKey);
+    log('Retrieved access token: ${token?.substring(0, 20)}...', name: 'StorageService');
+    return token;
   }
 
   @override
@@ -223,17 +226,21 @@ class StorageServiceImpl extends ChangeNotifier implements StorageService {
 
   @override
   String? getRefreshToken() {
-    return authBox.get(_refreshTokenKey);
+    final refreshToken = authBox.get(_refreshTokenKey);
+    log('Retrieved refresh token: ${refreshToken?.substring(0, 20)}...', name: 'StorageService');
+    return refreshToken;
   }
 
   @override
   Future<void> deleteToken() async {
+    log('Deleting access token', name: 'StorageService');
     await authBox.delete(_tokenKey);
     notifyListeners();
   }
 
   @override
   Future<void> deleteRefreshToken() async {
+    log('Deleting refresh token', name: 'StorageService');
     await authBox.delete(_refreshTokenKey);
     notifyListeners();
   }

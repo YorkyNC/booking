@@ -95,8 +95,16 @@ import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart
     as _i1013;
 import 'package:booking/src/features/settings/domain/usecases/change_password.dart'
     as _i955;
-import 'package:booking/src/features/student/presentation/bloc/student_bloc.dart'
-    as _i447;
+import 'package:booking/src/features/student/data/datasources/remote/i_stat_remote.dart'
+    as _i770;
+import 'package:booking/src/features/student/data/datasources/remote/stat_remote_impl.dart'
+    as _i297;
+import 'package:booking/src/features/student/data/repositories/stat_repository_impl.dart'
+    as _i396;
+import 'package:booking/src/features/student/domain/repositories/i_stat_repository.dart'
+    as _i143;
+import 'package:booking/src/features/student/domain/usecases/get_stat_use_case.dart'
+    as _i616;
 import 'package:booking/src/features/teacher_review/presentation/bloc/teacher_review_bloc.dart'
     as _i547;
 import 'package:get_it/get_it.dart' as _i174;
@@ -116,7 +124,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i511.ScheduleBloc>(() => _i511.ScheduleBloc());
     gh.factory<_i547.TeacherReviewBloc>(() => _i547.TeacherReviewBloc());
     gh.factory<_i738.CameraBloc>(() => _i738.CameraBloc());
-    gh.factory<_i447.StudentBloc>(() => _i447.StudentBloc());
     gh.factory<_i460.ReviewBloc>(() => _i460.ReviewBloc());
     gh.factory<_i464.ParentBloc>(() => _i464.ParentBloc());
     gh.factory<_i544.ActionBloc>(() => _i544.ActionBloc());
@@ -141,6 +148,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i184.IHistoryRemote>(
       () => _i980.HistoryRemoteImpl(),
       instanceName: 'HistoryRemoteImpl',
+    );
+    gh.lazySingleton<_i770.IStatRemote>(
+      () => _i297.StatRemoteImpl(),
+      instanceName: 'StatRemoteImpl',
     );
     gh.lazySingleton<_i434.ISeatRemote>(
       () => _i348.SeatRemoteImpl(),
@@ -180,6 +191,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i994.AddAttachmentUseCase>(() =>
         _i994.AddAttachmentUseCase(gh<_i140.IAttachmentRepository>(
             instanceName: 'AttachmentRepositoryImpl')));
+    gh.lazySingleton<_i143.IStatRepository>(
+      () => _i396.StatRepositoryImpl(
+          gh<_i770.IStatRemote>(instanceName: 'StatRemoteImpl')),
+      instanceName: 'StatRepositoryImpl',
+    );
+    gh.lazySingleton<_i616.GetStatUseCase>(() => _i616.GetStatUseCase(
+        gh<_i143.IStatRepository>(instanceName: 'StatRepositoryImpl')));
     gh.lazySingleton<_i654.IHistoryRepository>(
       () => _i592.HistoryRepositoryImpl(
           gh<_i184.IHistoryRemote>(instanceName: 'HistoryRemoteImpl')),

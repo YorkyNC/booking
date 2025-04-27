@@ -80,6 +80,7 @@ class AuthServiceImpl implements IAuthService {
 
   @override
   Future<Either<DomainException, UserEntity>> getUser() async {
+    log('Attempting to get user data', name: 'AuthService');
     final Either<DomainException, Response<dynamic>> response = await client.get(
       EndPoints.getUser,
       options: Options(
@@ -89,11 +90,17 @@ class AuthServiceImpl implements IAuthService {
     );
 
     return response.fold(
-      (error) => Left(error),
+      (error) {
+        log('Error getting user data: $error', name: 'AuthService');
+        return Left(error);
+      },
       (response) async {
+        log('User data response status: ${response.statusCode}', name: 'AuthService');
         if (response.statusCode == 200) {
+          log('Successfully retrieved user data', name: 'AuthService');
           return Right(UserEntity.fromJson(response.data));
         } else {
+          log('Failed to get user data: ${response.statusMessage}', name: 'AuthService');
           return Left(UnknownException(message: response.statusMessage));
         }
       },
@@ -182,12 +189,15 @@ class AuthServiceImpl implements IAuthService {
 
   @override
   Future<Either<DomainException, RefreshTokenResponse>> refreshToken() async {
+    log('Attempting to refresh token', name: 'AuthService');
     String? refreshToken = st.getRefreshToken();
     if (refreshToken == null) {
+      log('No refresh token found', name: 'AuthService');
       return Left(UnknownException(message: "No refresh token found"));
     }
 
     try {
+      log('Sending refresh token request', name: 'AuthService');
       final response = await client.post(
         EndPoints.refreshToken,
         data: {'refreshToken': refreshToken},
@@ -196,9 +206,14 @@ class AuthServiceImpl implements IAuthService {
         ),
       );
       return response.fold(
-        (error) => Left(error),
+        (error) {
+          log('Error refreshing token: $error', name: 'AuthService');
+          return Left(error);
+        },
         (response) async {
+          log('Refresh token response status: ${response.statusCode}', name: 'AuthService');
           if (response.statusCode == 200) {
+            log('Successfully refreshed token', name: 'AuthService');
             await st.deleteToken();
             await st.deleteRefreshToken();
 
@@ -206,15 +221,16 @@ class AuthServiceImpl implements IAuthService {
             await st.setRefreshToken(response.data['refreshToken']);
             return Right(RefreshTokenResponse.fromJson(response.data));
           } else {
+            log('Failed to refresh token: ${response.statusMessage}', name: 'AuthService');
             return Left(UnknownException(message: response.statusMessage));
           }
         },
       );
     } on DioException catch (e) {
-      log('DioError caught during refreshing token: $e');
+      log('DioError caught during refreshing token: $e', name: 'AuthService');
       return Left(NetworkException(message: e.message!));
     } catch (e) {
-      log('Exception caught during refreshing token: $e');
+      log('Exception caught during refreshing token: $e', name: 'AuthService');
       return Left(e is DomainException ? e : UnknownException(message: e.toString()));
     }
   }

@@ -96,14 +96,14 @@ class BookingHistoryPage extends StatelessWidget {
   }
 
   BookingStatus _getBookingStatus(String status) {
-    switch (status.toLowerCase()) {
-      case 'ongoing':
+    switch (status.toUpperCase()) {
+      case 'ACTIVE':
         return BookingStatus.ongoing;
-      case 'upcoming':
+      case 'RESERVED':
         return BookingStatus.upcoming;
-      case 'ended':
+      case 'EXPIRED':
         return BookingStatus.ended;
-      case 'cancelled':
+      case 'CANCELLED':
         return BookingStatus.cancelled;
       default:
         return BookingStatus.ended;

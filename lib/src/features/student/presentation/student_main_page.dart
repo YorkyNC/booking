@@ -7,7 +7,9 @@ import 'package:booking/src/core/services/injectable/injectable_service.dart';
 import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/history/presentation/bloc/history_bloc.dart';
 import 'package:booking/src/features/history/presentation/components/booking_card.dart';
+import 'package:booking/src/features/history/presentation/components/custom_dialog.dart';
 import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
+import 'package:booking/src/features/seat/domain/requests/cancel_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:booking/src/features/student/domain/requests/get_stat_request.dart';
 import 'package:booking/src/features/student/presentation/bloc/stat_bloc.dart';
@@ -24,36 +26,59 @@ class StudentMainPage extends StatefulWidget {
 }
 
 class _StudentMainPageState extends State<StudentMainPage> {
-  void _showErrorDialog(String message) {
+  void _handleCancellationSuccess(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Reservation cancelled successfully'),
+        backgroundColor: context.colors.success500,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  void _handleCancellationError(BuildContext context, String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error),
+        backgroundColor: context.colors.error500,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          textColor: context.colors.white,
+          onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+        ),
+      ),
+    );
+  }
+
+  void _showCancelDialog(BuildContext context, int bookingId, SeatBloc seatBloc) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Error',
-            style: context.typography.textlgBold.copyWith(
-              color: context.colors.error500,
-            ),
-          ),
-          content: Text(
-            message,
-            style: context.typography.textmdMedium,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'OK',
-                style: context.typography.textmdMedium.copyWith(
-                  color: context.colors.buttonColor,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
+      barrierDismissible: false,
+      builder: (dialogContext) => CustomDialog(
+        title: 'Cancel Reservation',
+        message: 'Are you sure you want to cancel this reservation? This action cannot be undone.',
+        confirmText: 'Yes, Cancel',
+        cancelText: context.loc.no ?? 'Keep Reservation',
+        icon: Icons.warning_rounded,
+        iconColor: context.colors.error500,
+        onConfirm: () => _handleCancelConfirm(dialogContext, bookingId, seatBloc),
+        onCancel: () => Navigator.of(dialogContext).pop(),
+        confirmColor: context.colors.error500,
+      ),
+    );
+  }
+
+  void _handleCancelConfirm(BuildContext dialogContext, int bookingId, SeatBloc seatBloc) {
+    Navigator.of(dialogContext).pop();
+    seatBloc.add(
+      SeatEvent.cancelReservation(
+        CancelReservationRequest(id: bookingId),
+      ),
     );
   }
 
@@ -119,7 +144,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
               listener: (context, state) {
                 state.maybeWhen(
                   error: (error) {
-                    _showErrorDialog(error);
+                    _handleCancellationError(context, error);
                   },
                   orElse: () {},
                 );
@@ -333,7 +358,7 @@ class _StudentMainPageState extends State<StudentMainPage> {
                       onTap: () {
                         final userId = st.getUserId();
                         if (userId == null) {
-                          _showErrorDialog('User ID not found. Please try logging in again.');
+                          _handleCancellationError(context, 'User ID not found. Please try logging in again.');
                           return;
                         }
                         getIt<SeatBloc>().add(
@@ -378,6 +403,8 @@ class _StudentMainPageState extends State<StudentMainPage> {
                               place: lastActiveBooking.seat.number,
                               status: lastActiveBooking.status,
                               showHeader: false,
+                              onDelete: () =>
+                                  _showCancelDialog(context, lastActiveBooking.id, context.read<SeatBloc>()),
                             );
                           },
                           orElse: () => const SizedBox.shrink(),

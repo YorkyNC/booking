@@ -377,10 +377,6 @@ class _BookingHistoryViewState extends State<_BookingHistoryView> {
     }
   }
 
-  // ===============================
-  // 7. DIALOG HANDLING
-  // ===============================
-
   void _showCancelDialog(BuildContext context, int bookingId, SeatBloc seatBloc) {
     showDialog(
       context: context,

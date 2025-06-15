@@ -9,9 +9,11 @@ import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart'
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_all_seat_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_seat_request.dart';
+import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
+import 'package:booking/src/features/seat/domain/usecases/repeat_last_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -29,19 +31,21 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
     this.getSeatUseCase,
     this.createReservationUseCase,
     this.getHistoryUseCase,
+    this.repeatLastUseCase,
   ) : super(const SeatState.loading());
 
   final GetAllSeatUseCase getAllSeatUseCase;
   final GetSeatUseCase getSeatUseCase;
   final CreateReservationUseCase createReservationUseCase;
   final GetHistoryUseCase getHistoryUseCase;
+  final RepeatLastUseCase repeatLastUseCase;
   SeatViewModel _viewModel = const SeatViewModel();
 
   @override
   Future<void> onEventHandler(SeatEvent event, Emitter emit) async {
     await event.when(
       started: () => _started(event as _Started),
-      getAll: (attachment) => _getAll(
+      getAll: (request) => _getAllSeat(
         event as _GetAllSeat,
         emit as Emitter<SeatState>,
       ),
@@ -57,18 +61,65 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
         event as _GetHistory,
         emit as Emitter<SeatState>,
       ),
+      repeatLast: (request) => _repeatLast(
+        event as _RepeatLast,
+        emit as Emitter<SeatState>,
+      ),
     );
   }
 
   Future<void> _started(_Started event) async {}
 
+  Future<void> _getAllSeat(_GetAllSeat event, Emitter emit) async {
+    emit(const SeatState.loading());
+    final Result<GetAllSeatEntity, DomainException> result = await getAllSeatUseCase.call(event.request);
+
+    if (result.isSuccessful && result.data != null) {
+      _viewModel = _viewModel.copyWith(
+        allSeat: result.data,
+      );
+      return emit(
+        SeatState.loaded(
+          viewModel: _viewModel.copyWith(
+            allSeat: result.data,
+          ),
+        ),
+      );
+    }
+
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to get all seats'));
+  }
+
+  Future<void> _getSeat(_GetSeat event, Emitter emit) async {
+    emit(const SeatState.loading());
+    final Result<SeatItemEntity, DomainException> result = await getSeatUseCase.call(event.request);
+
+    if (result.isSuccessful && result.data != null) {
+      _viewModel = _viewModel.copyWith(
+        seat: result.data,
+      );
+      return emit(
+        SeatState.loaded(
+          viewModel: _viewModel.copyWith(
+            seat: result.data,
+          ),
+        ),
+      );
+    }
+
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to get seat'));
+  }
+
   Future<void> _createReservation(_CreateReservation event, Emitter emit) async {
     emit(const SeatState.loading());
     final Result<CreateReservationEntity, DomainException> result = await createReservationUseCase.call(event.request);
 
-    if (result.isSuccessful) {
+    if (result.isSuccessful && result.data != null) {
+      _viewModel = _viewModel.copyWith(
+        reservation: result.data,
+      );
       return emit(
-        _Loaded(
+        SeatState.loaded(
           viewModel: _viewModel.copyWith(
             reservation: result.data,
           ),
@@ -76,56 +127,46 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
       );
     }
 
-    return emit(SeatState.error(result.failure!.message));
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to create reservation'));
   }
 
-  Future<void> _getAll(_GetAllSeat event, Emitter emit) async {
-    final Result<GetAllSeatEntity, DomainException> result = await getAllSeatUseCase.call(event.request);
-
+  Future<void> _getHistory(_GetHistory event, Emitter emit) async {
     emit(const SeatState.loading());
+    final Result<GetHistoryList, DomainException> result = await getHistoryUseCase.call(event.request);
 
-    if (result.isSuccessful) {
+    if (result.isSuccessful && result.data != null) {
       _viewModel = _viewModel.copyWith(
-        allSeat: GetAllSeatEntity(
-          data: result.data!.data,
-          count: result.data!.count,
-        ),
+        history: result.data,
       );
-    }
-
-    return emit(SeatState.loaded(viewModel: _viewModel));
-  }
-
-  Future<void> _getSeat(_GetSeat event, Emitter emit) async {
-    emit(const SeatState.loading());
-    final Result<SeatItemEntity, DomainException> result = await getSeatUseCase.call(event.request);
-
-    final data = result.data;
-
-    if (data != null) {
-      _viewModel = _viewModel.copyWith(seat: data);
       return emit(
-        _Loaded(
+        SeatState.loaded(
           viewModel: _viewModel.copyWith(
-            seat: data,
+            history: result.data,
           ),
         ),
       );
     }
 
-    return emit(SeatState.error(result.failure!.message));
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to get history'));
   }
 
-  Future<void> _getHistory(_GetHistory event, Emitter emit) async {
-    final Result<GetHistoryList, DomainException> result = await getHistoryUseCase.call(event.request);
+  Future<void> _repeatLast(_RepeatLast event, Emitter emit) async {
+    emit(const SeatState.loading());
+    final Result<GetHistoryEntity, DomainException> result = await repeatLastUseCase.call(event.request);
 
-    if (result.isSuccessful) {
-      _viewModel = _viewModel.copyWith(history: result.data);
+    if (result.isSuccessful && result.data != null) {
+      _viewModel = _viewModel.copyWith(
+        history: GetHistoryList(bookings: [result.data!]),
+      );
       return emit(
-        _Loaded(viewModel: _viewModel.copyWith(history: result.data)),
+        SeatState.loaded(
+          viewModel: _viewModel.copyWith(
+            history: GetHistoryList(bookings: [result.data!]),
+          ),
+        ),
       );
     }
 
-    return emit(SeatState.error(result.failure!.message));
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to repeat last reservation'));
   }
 }

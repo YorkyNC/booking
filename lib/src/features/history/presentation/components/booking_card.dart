@@ -1,4 +1,5 @@
 import 'package:booking/src/core/extensions/booking_status_extension.dart';
+import 'package:booking/src/core/extensions/date_time_extension.dart';
 import 'package:booking/src/features/history/domain/enum/booking_status.dart';
 import 'package:flutter/material.dart';
 
@@ -95,7 +96,7 @@ class BookingCard extends StatelessWidget {
                     children: [
                       _timeColumn(
                         '${startTime.hour.toString().padLeft(2, '0')}:00',
-                        'Jan ${startTime.day}',
+                        startTime.formatDateFull,
                       ),
                       Expanded(
                         child: Column(
@@ -120,7 +121,7 @@ class BookingCard extends StatelessWidget {
                       ),
                       _timeColumn(
                         '${endTime.hour.toString().padLeft(2, '0')}:00',
-                        'Jan ${endTime.day}',
+                        endTime.formatDateFull,
                       ),
                     ],
                   ),

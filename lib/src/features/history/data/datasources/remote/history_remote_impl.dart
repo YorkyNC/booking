@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:booking/src/features/history/domain/enum/entities/get_history_entity.dart';
@@ -32,9 +33,12 @@ class HistoryRemoteImpl implements IHistoryRemote {
       queryParams['seatId'] = request.seatId;
     }
     final Either<DomainException, Response<dynamic>> response = await client.get(
-      'http://45.136.56.65:8000/rest/sdu/booking/reservations',
+      'http://191.101.218.103:8000/rest/sdu/booking/reservations',
       options: Options(
-        headers: headers,
+        headers: {
+          'accept': 'application/json',
+          'Authorization': 'Bearer ${StorageServiceImpl().getToken()}',
+        },
       ),
       queryParameters: queryParams,
     );
@@ -47,12 +51,46 @@ class HistoryRemoteImpl implements IHistoryRemote {
           if (historyList.isEmpty) {
             return Left(UnknownException(message: 'No history found'));
           }
-          // Convert each item in the list to GetHistoryEntity
+
           final bookings = historyList.map((item) => GetHistoryEntity.fromJson(item)).toList();
           return Right(GetHistoryList(bookings: bookings));
         }
-        // If it's not a list, wrap the single item in a list
-        return Right(GetHistoryList(bookings: [GetHistoryEntity.fromJson(result.data)]));
+        if (result.statusCode == 200) {
+          try {
+            // Ensure data is properly parsed as JSON
+            final dynamic responseData = result.data;
+            log('Response data: $responseData');
+
+            Map<String, dynamic> jsonData;
+
+            if (responseData == null || responseData.toString().trim().isEmpty) {
+              return Left(UnknownException(message: 'Empty response data received'));
+            }
+
+            if (responseData is String) {
+              try {
+                jsonData = json.decode(responseData) as Map<String, dynamic>;
+              } catch (e) {
+                log('JSON decode error: $e');
+                return Left(UnknownException(message: 'Invalid JSON format in response: $e'));
+              }
+            } else if (responseData is Map<String, dynamic>) {
+              jsonData = responseData;
+            } else {
+              log('Unexpected response type: ${responseData.runtimeType}');
+              return Left(UnknownException(message: 'Invalid response data format: ${responseData.runtimeType}'));
+            }
+
+            final historyEntity = GetHistoryEntity.fromJson(jsonData);
+            return Right(GetHistoryList(bookings: [historyEntity]));
+          } catch (e) {
+            log('Error processing response: $e');
+            return Left(UnknownException(message: 'Failed to parse statistics data: $e'));
+          }
+        } else {
+          final errorMessage = 'Failed to fetch statistics. Status code: ${result.statusCode}';
+          return Left(UnknownException(message: errorMessage));
+        }
       },
     );
   }

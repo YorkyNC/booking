@@ -10,6 +10,7 @@ import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
+import 'package:booking/src/features/seat/domain/usecases/repeat_last_use_case.dart';
 import 'package:booking/src/features/student/domain/usecases/get_stat_use_case.dart';
 import 'package:booking/src/features/student/presentation/bloc/stat_bloc.dart';
 import 'package:dio/dio.dart';
@@ -97,6 +98,7 @@ void manualRegisterServices() {
       getIt<GetSeatUseCase>(),
       getIt<CreateReservationUseCase>(),
       getIt<GetHistoryUseCase>(),
+      getIt<RepeatLastUseCase>(),
     ),
   );
   getIt.registerBloc<HistoryBloc>(

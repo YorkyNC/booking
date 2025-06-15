@@ -14,16 +14,16 @@ class BookingHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: context.colors.gray100,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.chevron_left,
-            color: Colors.black,
+            color: context.colors.black,
           ),
           onPressed: () => context.pop(),
         ),
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: context.colors.gray100,
         title: Text(
           context.loc.bookingHistory,
           style: context.typography.displayxsSemibold.copyWith(
@@ -42,50 +42,87 @@ class BookingHistoryPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
             error: (error) => Center(
-              child: Text(
-                error.toString(),
-                style: context.typography.displayxsRegular.copyWith(
-                  color: context.colors.error500,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    error.toString(),
+                    style: context.typography.displayxsRegular.copyWith(
+                      color: context.colors.error500,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      bloc.add(HistoryEvent.getHistory(GetHistoryRequest(userId: st.getUserId()!)));
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             ),
             loaded: (viewModel) {
               final history = viewModel.history;
-              print(history);
-              if (history == null) {
+
+              if (history == null || history.isEmpty) {
                 return Center(
-                  child: Text(
-                    'No booking history',
-                    style: context.typography.displayxsRegular,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.history,
+                        size: 64,
+                        color: context.colors.gray400,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No booking history', // TODO: Add localization
+                        style: context.typography.displayxsRegular.copyWith(
+                          color: context.colors.gray500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 );
               }
 
               return RefreshIndicator(
                 onRefresh: () async {
-                  bloc.add(HistoryEvent.getHistory(GetHistoryRequest(userId: st.getUserId()!)));
+                  try {
+                    await Future.delayed(const Duration(milliseconds: 500)); // Add slight delay for better UX
+                    bloc.add(HistoryEvent.getHistory(GetHistoryRequest(userId: st.getUserId()!)));
+                  } catch (e) {
+                    // Handle any refresh errors silently
+                    debugPrint('Refresh error: $e');
+                  }
                 },
-                child: SingleChildScrollView(
+                color: context.colors.buttonColor,
+                backgroundColor: context.colors.white,
+                strokeWidth: 3,
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(), // Enable scrolling even when content is small
                   padding: const EdgeInsets.symmetric(horizontal: 29.0, vertical: 12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: history
-                        .map((booking) => BookingCard(
-                              startTime: booking.startTime,
-                              endTime: booking.endTime,
-                              floor: booking.floor.toString(),
-                              sector: booking.seat.number,
-                              row: booking.seat.number,
-                              place: booking.seat.location,
-                              status: _getBookingStatus(booking.status),
-                              onDelete: _getBookingStatus(booking.status) == BookingStatus.upcoming
-                                  ? () {
-                                      // TODO: Implement delete functionality
-                                    }
-                                  : null,
-                            ))
-                        .toList(),
-                  ),
+                  itemCount: history.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final booking = history[index];
+                    return BookingCard(
+                      startTime: booking.startTime,
+                      endTime: booking.endTime,
+                      floor: booking.floor.toString(),
+                      sector: booking.seat.number,
+                      row: booking.seat.number,
+                      place: booking.seat.location,
+                      status: _getBookingStatus(booking.status),
+                      onDelete: _getBookingStatus(booking.status) == BookingStatus.upcoming
+                          ? () {
+                              // TODO: Implement delete functionality
+                            }
+                          : null,
+                    );
+                  },
                 ),
               );
             },

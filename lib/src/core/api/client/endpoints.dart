@@ -1,5 +1,5 @@
 class EndPoints {
-  static const String baseUrl = 'http://45.136.56.65:8000/api';
+  static const String baseUrl = 'http://191.101.218.103:8000/api';
   // static const String baseUrl =
   //     'http://ae2409f46cbdd4b629bfcefff587fe39-631939517.me-central-1.elb.amazonaws.com/api';
   // Auth

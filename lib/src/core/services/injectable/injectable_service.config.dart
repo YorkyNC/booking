@@ -93,6 +93,8 @@ import 'package:booking/src/features/seat/domain/usecases/get_history_use_case.d
     as _i7;
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart'
     as _i1013;
+import 'package:booking/src/features/seat/domain/usecases/repeat_last_use_case.dart'
+    as _i716;
 import 'package:booking/src/features/settings/domain/usecases/change_password.dart'
     as _i955;
 import 'package:booking/src/features/student/data/datasources/remote/i_stat_remote.dart'
@@ -216,6 +218,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i888.GetAllSeatUseCase>(() => _i888.GetAllSeatUseCase(
         gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i7.GetHistoryUseCase>(() => _i7.GetHistoryUseCase(
+        gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
+    gh.lazySingleton<_i716.RepeatLastUseCase>(() => _i716.RepeatLastUseCase(
         gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i568.GetUserUseCase>(() => _i568.GetUserUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));

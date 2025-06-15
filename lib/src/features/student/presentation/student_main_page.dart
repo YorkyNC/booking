@@ -8,6 +8,8 @@ import 'package:booking/src/features/history/domain/enum/booking_status.dart';
 import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/history/presentation/bloc/history_bloc.dart';
 import 'package:booking/src/features/history/presentation/components/booking_card.dart';
+import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
+import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:booking/src/features/student/domain/requests/get_stat_request.dart';
 import 'package:booking/src/features/student/presentation/bloc/stat_bloc.dart';
 import 'package:booking/src/features/student/presentation/components/common_container.dart';
@@ -23,6 +25,39 @@ class StudentMainPage extends StatefulWidget {
 }
 
 class _StudentMainPageState extends State<StudentMainPage> {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Error',
+            style: context.typography.textlgBold.copyWith(
+              color: context.colors.error500,
+            ),
+          ),
+          content: Text(
+            message,
+            style: context.typography.textmdMedium,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'OK',
+                style: context.typography.textmdMedium.copyWith(
+                  color: context.colors.buttonColor,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     log(st.getUserId().toString());
@@ -41,26 +76,57 @@ class _StudentMainPageState extends State<StudentMainPage> {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => getIt<StatBloc>()
-              ..add(
-                StatEvent.getStat(
-                  GetStatRequest(userId: st.getUserId()!),
-                ),
-              ),
+            create: (context) {
+              final userId = st.getUserId();
+              if (userId == null) {
+                // Handle the case when userId is null
+                return getIt<StatBloc>();
+              }
+              return getIt<StatBloc>()
+                ..add(
+                  StatEvent.getStat(
+                    GetStatRequest(userId: userId),
+                  ),
+                );
+            },
           ),
           BlocProvider(
-            create: (context) => getIt<HistoryBloc>()
-              ..add(
-                HistoryEvent.getHistory(
-                  GetHistoryRequest(userId: st.getUserId()!),
-                ),
-              ),
+            create: (context) {
+              final userId = st.getUserId();
+              if (userId == null) {
+                // Handle the case when userId is null
+                return getIt<HistoryBloc>();
+              }
+              return getIt<HistoryBloc>()
+                ..add(
+                  HistoryEvent.getHistory(
+                    GetHistoryRequest(userId: userId),
+                  ),
+                );
+            },
+          ),
+          BlocProvider(
+            create: (context) => getIt<SeatBloc>(),
           ),
         ],
-        child: BlocListener<HistoryBloc, HistoryState>(
-          listener: (context, state) {
-            // Handle any state changes if needed
-          },
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<HistoryBloc, HistoryState>(
+              listener: (context, state) {
+                // Handle any state changes if needed
+              },
+            ),
+            BlocListener<SeatBloc, SeatState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  error: (error) {
+                    _showErrorDialog(error);
+                  },
+                  orElse: () {},
+                );
+              },
+            ),
+          ],
           child: SingleChildScrollView(
             child: SafeArea(
               child: Padding(
@@ -266,7 +332,16 @@ class _StudentMainPageState extends State<StudentMainPage> {
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        context.push(RoutePaths.booking);
+                        final userId = st.getUserId();
+                        if (userId == null) {
+                          _showErrorDialog('User ID not found. Please try logging in again.');
+                          return;
+                        }
+                        getIt<SeatBloc>().add(
+                          SeatEvent.repeatLast(
+                            RepeatLastRequest(userId: userId),
+                          ),
+                        );
                       },
                       child: CommonContainer(
                         color: const Color(0xff35D642),

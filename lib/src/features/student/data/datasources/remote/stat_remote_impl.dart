@@ -31,7 +31,7 @@ class StatRemoteImpl implements IStatRemote {
 
     try {
       final Either<DomainException, Response<dynamic>> response = await client.get(
-        'http://45.136.56.65:8000/rest/sdu/booking/user/statistics',
+        'http://191.101.218.103:8000/rest/sdu/booking/user/statistics',
         options: Options(
           headers: headers,
         ),

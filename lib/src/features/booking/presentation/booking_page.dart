@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:booking/src/core/base/base_bloc/bloc/base_bloc_widget.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/core/services/injectable/injectable_service.dart';
+import 'package:booking/src/core/services/storage/storage_service_impl.dart';
 import 'package:booking/src/features/booking/domain%20/validators.dart';
 import 'package:booking/src/features/booking/presentation/booking_data_extractor.dart';
 import 'package:booking/src/features/booking/presentation/components/booking_summary.dart';
@@ -16,6 +17,7 @@ import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.da
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_all_seat_request.dart';
+import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -28,10 +30,12 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
+  final StorageServiceImpl st = StorageServiceImpl();
+
   final List<Map<String, dynamic>> _floorData = [
-    {'id': '0', 'name': '0', 'available': 0},
-    {'id': '1', 'name': '1', 'available': 0},
-    {'id': '2', 'name': '2', 'available': 0},
+    {'id': '0', 'name': '0', 'available': 100},
+    {'id': '1', 'name': '1', 'available': 50},
+    {'id': '2', 'name': '2', 'available': 100},
   ];
 
   List<Map<String, dynamic>> _sectorData = [];
@@ -125,10 +129,12 @@ class _BookingPageState extends State<BookingPage> {
       }
     }
 
-    // Update _floorData with new counts
-    for (var floor in _floorData) {
-      final floorId = floor['id'] as String;
-      floor['available'] = floorAvailableCounts[floorId] ?? 0;
+    // Only update floor counts if we have actual seat data
+    if (seats.isNotEmpty) {
+      for (var floor in _floorData) {
+        final floorId = floor['id'] as String;
+        floor['available'] = floorAvailableCounts[floorId] ?? 0;
+      }
     }
 
     // Set initial floor if not set
@@ -354,11 +360,13 @@ class _BookingPageState extends State<BookingPage> {
       builder: (context, state, bloc) {
         return state.maybeWhen(
           orElse: () {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+            return Scaffold(
+              backgroundColor: context.colors.gray100,
+              body: const Center(child: CircularProgressIndicator()),
             );
           },
           error: (error) => Scaffold(
+            backgroundColor: context.colors.gray100,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -397,6 +405,7 @@ class _BookingPageState extends State<BookingPage> {
   // Extract the main Scaffold to a separate method for better code organization
   Widget _buildMainScaffold(BuildContext context, SeatBloc bloc, List<SeatItemEntity> seats) {
     return Scaffold(
+      backgroundColor: context.colors.gray100,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
@@ -414,7 +423,6 @@ class _BookingPageState extends State<BookingPage> {
         ),
         centerTitle: true,
       ),
-      backgroundColor: context.colors.gray100,
       body: Form(
         key: _formKey,
         child: Padding(
@@ -423,6 +431,30 @@ class _BookingPageState extends State<BookingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 20),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      bloc.add(SeatEvent.repeatLast(RepeatLastRequest(userId: st.getUserId()!)));
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.toString()),
+                            backgroundColor: context.colors.error500,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.replay),
+                  label: const Text('Repeat last booking'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: context.colors.buttonColor,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 const SectionHeader(text: 'Choose floor'),
                 const SizedBox(height: 10),

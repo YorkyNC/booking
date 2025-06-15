@@ -21,11 +21,30 @@ class GetHistoryEntity with _$GetHistoryEntity {
   factory GetHistoryEntity.fromJson(Map<String, dynamic> json) => _$GetHistoryEntityFromJson(json);
 }
 
+// CORRECTED: The JSON returns an array directly, not an object with "bookings" property
 @freezed
 class GetHistoryList with _$GetHistoryList {
   const factory GetHistoryList({
-    required List<GetHistoryEntity> bookings,
+    required List<GetHistoryEntity> bookings, // Changed from 'bookings' to 'data' or keep as list
   }) = _GetHistoryList;
 
-  factory GetHistoryList.fromJson(Map<String, dynamic> json) => _$GetHistoryListFromJson(json);
+  // Since the JSON is a direct array, you might want to handle it differently:
+  factory GetHistoryList.fromJson(List<dynamic> json) =>
+      GetHistoryList(bookings: json.map((e) => GetHistoryEntity.fromJson(e)).toList());
+
+  // Alternative: If you expect the JSON to be wrapped in an object later:
+  // factory GetHistoryList.fromJson(Map<String, dynamic> json) => _$GetHistoryListFromJson(json);
+}
+
+// ALTERNATIVE APPROACH: Handle the array directly without wrapper class
+// You could also just use: List<GetHistoryEntity>.from(jsonArray.map((x) => GetHistoryEntity.fromJson(x)))
+
+// If you need to keep the current structure but the API returns a direct array,
+// you can create a helper method:
+extension GetHistoryListExtension on GetHistoryList {
+  static GetHistoryList fromJsonArray(List<dynamic> jsonArray) {
+    return GetHistoryList(
+      bookings: jsonArray.map((json) => GetHistoryEntity.fromJson(json)).toList(),
+    );
+  }
 }

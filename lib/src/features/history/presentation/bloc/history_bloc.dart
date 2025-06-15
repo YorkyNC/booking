@@ -39,21 +39,19 @@ class HistoryBloc extends BaseBloc<HistoryEvent, HistoryState> {
     emit(const HistoryState.loading());
     final Result<GetHistoryList, DomainException> result = await getHistoryUseCase.call(event.request);
 
-    final data = result.data;
-
-    if (data != null) {
+    if (result.isSuccessful && result.data != null) {
       _viewModel = _viewModel.copyWith(
-        history: data.bookings,
+        history: result.data!.bookings,
       );
       return emit(
-        _Loaded(
+        HistoryState.loaded(
           viewModel: _viewModel.copyWith(
-            history: data.bookings,
+            history: result.data!.bookings,
           ),
         ),
       );
     }
 
-    return emit(HistoryState.error(result.failure!.message));
+    return emit(HistoryState.error(result.failure?.message ?? 'Failed to get history'));
   }
 }

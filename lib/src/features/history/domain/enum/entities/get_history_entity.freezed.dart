@@ -25,7 +25,8 @@ mixin _$GetHistoryEntity {
   SeatItemEntity get seat => throw _privateConstructorUsedError;
   DateTime get startTime => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+  BookingStatus get status => throw _privateConstructorUsedError;
   int get floor => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
 
@@ -51,7 +52,8 @@ abstract class $GetHistoryEntityCopyWith<$Res> {
       SeatItemEntity seat,
       DateTime startTime,
       DateTime endTime,
-      String status,
+      @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+      BookingStatus status,
       int floor,
       String date});
 
@@ -107,7 +109,7 @@ class _$GetHistoryEntityCopyWithImpl<$Res, $Val extends GetHistoryEntity>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as BookingStatus,
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -154,7 +156,8 @@ abstract class _$$GetHistoryEntityImplCopyWith<$Res>
       SeatItemEntity seat,
       DateTime startTime,
       DateTime endTime,
-      String status,
+      @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+      BookingStatus status,
       int floor,
       String date});
 
@@ -210,7 +213,7 @@ class __$$GetHistoryEntityImplCopyWithImpl<$Res>
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String,
+              as BookingStatus,
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
@@ -232,6 +235,7 @@ class _$GetHistoryEntityImpl implements _GetHistoryEntity {
       required this.seat,
       required this.startTime,
       required this.endTime,
+      @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
       required this.status,
       required this.floor,
       required this.date});
@@ -250,7 +254,8 @@ class _$GetHistoryEntityImpl implements _GetHistoryEntity {
   @override
   final DateTime endTime;
   @override
-  final String status;
+  @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+  final BookingStatus status;
   @override
   final int floor;
   @override
@@ -306,7 +311,8 @@ abstract class _GetHistoryEntity implements GetHistoryEntity {
       required final SeatItemEntity seat,
       required final DateTime startTime,
       required final DateTime endTime,
-      required final String status,
+      @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+      required final BookingStatus status,
       required final int floor,
       required final String date}) = _$GetHistoryEntityImpl;
 
@@ -324,7 +330,8 @@ abstract class _GetHistoryEntity implements GetHistoryEntity {
   @override
   DateTime get endTime;
   @override
-  String get status;
+  @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson)
+  BookingStatus get status;
   @override
   int get floor;
   @override

@@ -7,6 +7,7 @@ import 'package:booking/src/features/history/domain/use_case/get_history_use_cas
 import 'package:booking/src/features/history/presentation/bloc/history_bloc.dart';
 import 'package:booking/src/features/login/domain/usecases/register_use_case.dart';
 import 'package:booking/src/features/seat/bloc/bloc/seat_bloc.dart';
+import 'package:booking/src/features/seat/domain/usecases/cancel_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
@@ -99,6 +100,7 @@ void manualRegisterServices() {
       getIt<CreateReservationUseCase>(),
       getIt<GetHistoryUseCase>(),
       getIt<RepeatLastUseCase>(),
+      getIt<CancelReservationUseCase>(),
     ),
   );
   getIt.registerBloc<HistoryBloc>(

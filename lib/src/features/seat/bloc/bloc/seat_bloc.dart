@@ -6,10 +6,12 @@ import 'package:booking/src/features/history/domain/use_case/get_history_use_cas
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/cancel_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_all_seat_request.dart';
 import 'package:booking/src/features/seat/domain/requests/get_seat_request.dart';
 import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
+import 'package:booking/src/features/seat/domain/usecases/cancel_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart';
 import 'package:booking/src/features/seat/domain/usecases/get_seat_use_case.dart';
@@ -32,6 +34,7 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
     this.createReservationUseCase,
     this.getHistoryUseCase,
     this.repeatLastUseCase,
+    this.cancelReservationUseCase,
   ) : super(const SeatState.loading());
 
   final GetAllSeatUseCase getAllSeatUseCase;
@@ -39,6 +42,7 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
   final CreateReservationUseCase createReservationUseCase;
   final GetHistoryUseCase getHistoryUseCase;
   final RepeatLastUseCase repeatLastUseCase;
+  final CancelReservationUseCase cancelReservationUseCase;
   SeatViewModel _viewModel = const SeatViewModel();
 
   @override
@@ -63,6 +67,10 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
       ),
       repeatLast: (request) => _repeatLast(
         event as _RepeatLast,
+        emit as Emitter<SeatState>,
+      ),
+      cancelReservation: (request) => _cancelReservation(
+        event as _CancelReservation,
         emit as Emitter<SeatState>,
       ),
     );
@@ -168,5 +176,25 @@ class SeatBloc extends BaseBloc<SeatEvent, SeatState> {
     }
 
     return emit(SeatState.error(result.failure?.message ?? 'Failed to repeat last reservation'));
+  }
+
+  Future<void> _cancelReservation(_CancelReservation event, Emitter emit) async {
+    emit(const SeatState.loading());
+    final Result<GetHistoryEntity, DomainException> result = await cancelReservationUseCase.call(event.request);
+
+    if (result.isSuccessful && result.data != null) {
+      _viewModel = _viewModel.copyWith(
+        history: GetHistoryList(bookings: [result.data!]),
+      );
+      return emit(
+        SeatState.loaded(
+          viewModel: _viewModel.copyWith(
+            history: GetHistoryList(bookings: [result.data!]),
+          ),
+        ),
+      );
+    }
+
+    return emit(SeatState.error(result.failure?.message ?? 'Failed to cancel reservation'));
   }
 }

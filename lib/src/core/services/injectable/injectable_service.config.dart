@@ -85,6 +85,8 @@ import 'package:booking/src/features/seat/data/repositories/seat_repository_impl
     as _i579;
 import 'package:booking/src/features/seat/domain/repositories/i_seat_repository.dart'
     as _i1017;
+import 'package:booking/src/features/seat/domain/usecases/cancel_reservation_use_case.dart'
+    as _i261;
 import 'package:booking/src/features/seat/domain/usecases/create_reservation_use_case.dart'
     as _i213;
 import 'package:booking/src/features/seat/domain/usecases/get_all_seat_use_case.dart'
@@ -221,6 +223,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i716.RepeatLastUseCase>(() => _i716.RepeatLastUseCase(
         gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
+    gh.lazySingleton<_i261.CancelReservationUseCase>(() =>
+        _i261.CancelReservationUseCase(
+            gh<_i1017.ISeatRepository>(instanceName: 'SeatRepositoryImpl')));
     gh.lazySingleton<_i568.GetUserUseCase>(() => _i568.GetUserUseCase(
         gh<_i385.IAuthRepository>(instanceName: 'AuthRepositoryImpl')));
     gh.lazySingleton<_i1056.VerifyUseCase>(() => _i1056.VerifyUseCase(

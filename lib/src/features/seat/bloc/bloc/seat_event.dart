@@ -13,4 +13,6 @@ class SeatEvent with _$SeatEvent {
   const factory SeatEvent.getHistory(GetHistoryRequest request) = _GetHistory;
 
   const factory SeatEvent.repeatLast(RepeatLastRequest request) = _RepeatLast;
+
+  const factory SeatEvent.cancelReservation(CancelReservationRequest request) = _CancelReservation;
 }

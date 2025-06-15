@@ -15,11 +15,10 @@ class DioInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final String? accessToken = st.getToken();
-    _log('Raw Token Value: $accessToken'); // Add this to see if token exists
+    _log('Raw Token Value: $accessToken');
 
     if (accessToken != null && accessToken.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
-      // _log('Full Headers After Setting: ${options.headers}'); // Check full headers
+      options.headers['Authorization'] = accessToken.startsWith('Bearer ') ? accessToken : 'Bearer $accessToken';
     } else {
       _log('No token available in storage');
     }

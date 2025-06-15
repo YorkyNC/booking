@@ -3,6 +3,7 @@ import 'package:booking/src/features/history/domain/enum/requests/get_history_re
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/get_all_seat_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/cancel_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:fpdart/fpdart.dart';
@@ -27,5 +28,8 @@ abstract class ISeatRemote {
   );
   Future<Either<DomainException, GetHistoryEntity>> repeatLast(
     RepeatLastRequest request,
+  );
+  Future<Either<DomainException, GetHistoryEntity>> cancelReservation(
+    CancelReservationRequest request,
   );
 }

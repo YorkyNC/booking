@@ -2,6 +2,7 @@ import 'package:booking/src/features/history/domain/enum/entities/get_history_en
 import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/seat/domain/entities/create_reservation_entity.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
+import 'package:booking/src/features/seat/domain/requests/cancel_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/create_reservation_request.dart';
 import 'package:booking/src/features/seat/domain/requests/repeat_last_request.dart';
 import 'package:fpdart/fpdart.dart';
@@ -27,5 +28,8 @@ abstract class ISeatRepository {
   );
   Future<Either<DomainException, GetHistoryEntity>> repeatLast(
     RepeatLastRequest request,
+  );
+  Future<Either<DomainException, GetHistoryEntity>> cancelReservation(
+    CancelReservationRequest request,
   );
 }

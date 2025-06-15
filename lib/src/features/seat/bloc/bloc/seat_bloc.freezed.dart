@@ -25,6 +25,8 @@ mixin _$SeatEvent {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$SeatEvent {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -45,6 +48,7 @@ mixin _$SeatEvent {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -56,6 +60,7 @@ mixin _$SeatEvent {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -66,6 +71,7 @@ mixin _$SeatEvent {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -76,6 +82,7 @@ mixin _$SeatEvent {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -149,6 +156,8 @@ class _$StartedImpl implements _Started {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return started();
   }
@@ -162,6 +171,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return started?.call();
   }
@@ -175,6 +185,7 @@ class _$StartedImpl implements _Started {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -192,6 +203,7 @@ class _$StartedImpl implements _Started {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return started(this);
   }
@@ -205,6 +217,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return started?.call(this);
   }
@@ -218,6 +231,7 @@ class _$StartedImpl implements _Started {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -318,6 +332,8 @@ class _$GetAllSeatImpl implements _GetAllSeat {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return getAll(request);
   }
@@ -331,6 +347,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return getAll?.call(request);
   }
@@ -344,6 +361,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getAll != null) {
@@ -361,6 +379,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return getAll(this);
   }
@@ -374,6 +393,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return getAll?.call(this);
   }
@@ -387,6 +407,7 @@ class _$GetAllSeatImpl implements _GetAllSeat {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getAll != null) {
@@ -495,6 +516,8 @@ class _$GetSeatImpl implements _GetSeat {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return getSeat(request);
   }
@@ -508,6 +531,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return getSeat?.call(request);
   }
@@ -521,6 +545,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getSeat != null) {
@@ -538,6 +563,7 @@ class _$GetSeatImpl implements _GetSeat {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return getSeat(this);
   }
@@ -551,6 +577,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return getSeat?.call(this);
   }
@@ -564,6 +591,7 @@ class _$GetSeatImpl implements _GetSeat {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getSeat != null) {
@@ -673,6 +701,8 @@ class _$CreateReservationImpl implements _CreateReservation {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return createReservation(request);
   }
@@ -686,6 +716,7 @@ class _$CreateReservationImpl implements _CreateReservation {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return createReservation?.call(request);
   }
@@ -699,6 +730,7 @@ class _$CreateReservationImpl implements _CreateReservation {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (createReservation != null) {
@@ -716,6 +748,7 @@ class _$CreateReservationImpl implements _CreateReservation {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return createReservation(this);
   }
@@ -729,6 +762,7 @@ class _$CreateReservationImpl implements _CreateReservation {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return createReservation?.call(this);
   }
@@ -742,6 +776,7 @@ class _$CreateReservationImpl implements _CreateReservation {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (createReservation != null) {
@@ -851,6 +886,8 @@ class _$GetHistoryImpl implements _GetHistory {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return getHistory(request);
   }
@@ -864,6 +901,7 @@ class _$GetHistoryImpl implements _GetHistory {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return getHistory?.call(request);
   }
@@ -877,6 +915,7 @@ class _$GetHistoryImpl implements _GetHistory {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getHistory != null) {
@@ -894,6 +933,7 @@ class _$GetHistoryImpl implements _GetHistory {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return getHistory(this);
   }
@@ -907,6 +947,7 @@ class _$GetHistoryImpl implements _GetHistory {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return getHistory?.call(this);
   }
@@ -920,6 +961,7 @@ class _$GetHistoryImpl implements _GetHistory {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (getHistory != null) {
@@ -1028,6 +1070,8 @@ class _$RepeatLastImpl implements _RepeatLast {
         createReservation,
     required TResult Function(GetHistoryRequest request) getHistory,
     required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
   }) {
     return repeatLast(request);
   }
@@ -1041,6 +1085,7 @@ class _$RepeatLastImpl implements _RepeatLast {
     TResult? Function(CreateReservationRequest request)? createReservation,
     TResult? Function(GetHistoryRequest request)? getHistory,
     TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
   }) {
     return repeatLast?.call(request);
   }
@@ -1054,6 +1099,7 @@ class _$RepeatLastImpl implements _RepeatLast {
     TResult Function(CreateReservationRequest request)? createReservation,
     TResult Function(GetHistoryRequest request)? getHistory,
     TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
     required TResult orElse(),
   }) {
     if (repeatLast != null) {
@@ -1071,6 +1117,7 @@ class _$RepeatLastImpl implements _RepeatLast {
     required TResult Function(_CreateReservation value) createReservation,
     required TResult Function(_GetHistory value) getHistory,
     required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
   }) {
     return repeatLast(this);
   }
@@ -1084,6 +1131,7 @@ class _$RepeatLastImpl implements _RepeatLast {
     TResult? Function(_CreateReservation value)? createReservation,
     TResult? Function(_GetHistory value)? getHistory,
     TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
   }) {
     return repeatLast?.call(this);
   }
@@ -1097,6 +1145,7 @@ class _$RepeatLastImpl implements _RepeatLast {
     TResult Function(_CreateReservation value)? createReservation,
     TResult Function(_GetHistory value)? getHistory,
     TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
     required TResult orElse(),
   }) {
     if (repeatLast != null) {
@@ -1115,6 +1164,192 @@ abstract class _RepeatLast implements SeatEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RepeatLastImplCopyWith<_$RepeatLastImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CancelReservationImplCopyWith<$Res> {
+  factory _$$CancelReservationImplCopyWith(_$CancelReservationImpl value,
+          $Res Function(_$CancelReservationImpl) then) =
+      __$$CancelReservationImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({CancelReservationRequest request});
+
+  $CancelReservationRequestCopyWith<$Res> get request;
+}
+
+/// @nodoc
+class __$$CancelReservationImplCopyWithImpl<$Res>
+    extends _$SeatEventCopyWithImpl<$Res, _$CancelReservationImpl>
+    implements _$$CancelReservationImplCopyWith<$Res> {
+  __$$CancelReservationImplCopyWithImpl(_$CancelReservationImpl _value,
+      $Res Function(_$CancelReservationImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? request = null,
+  }) {
+    return _then(_$CancelReservationImpl(
+      null == request
+          ? _value.request
+          : request // ignore: cast_nullable_to_non_nullable
+              as CancelReservationRequest,
+    ));
+  }
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CancelReservationRequestCopyWith<$Res> get request {
+    return $CancelReservationRequestCopyWith<$Res>(_value.request, (value) {
+      return _then(_value.copyWith(request: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CancelReservationImpl implements _CancelReservation {
+  const _$CancelReservationImpl(this.request);
+
+  @override
+  final CancelReservationRequest request;
+
+  @override
+  String toString() {
+    return 'SeatEvent.cancelReservation(request: $request)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CancelReservationImpl &&
+            (identical(other.request, request) || other.request == request));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, request);
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CancelReservationImplCopyWith<_$CancelReservationImpl> get copyWith =>
+      __$$CancelReservationImplCopyWithImpl<_$CancelReservationImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(GetAllSeatRequest request) getAll,
+    required TResult Function(GetSeatRequest request) getSeat,
+    required TResult Function(CreateReservationRequest request)
+        createReservation,
+    required TResult Function(GetHistoryRequest request) getHistory,
+    required TResult Function(RepeatLastRequest request) repeatLast,
+    required TResult Function(CancelReservationRequest request)
+        cancelReservation,
+  }) {
+    return cancelReservation(request);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(GetAllSeatRequest request)? getAll,
+    TResult? Function(GetSeatRequest request)? getSeat,
+    TResult? Function(CreateReservationRequest request)? createReservation,
+    TResult? Function(GetHistoryRequest request)? getHistory,
+    TResult? Function(RepeatLastRequest request)? repeatLast,
+    TResult? Function(CancelReservationRequest request)? cancelReservation,
+  }) {
+    return cancelReservation?.call(request);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(GetAllSeatRequest request)? getAll,
+    TResult Function(GetSeatRequest request)? getSeat,
+    TResult Function(CreateReservationRequest request)? createReservation,
+    TResult Function(GetHistoryRequest request)? getHistory,
+    TResult Function(RepeatLastRequest request)? repeatLast,
+    TResult Function(CancelReservationRequest request)? cancelReservation,
+    required TResult orElse(),
+  }) {
+    if (cancelReservation != null) {
+      return cancelReservation(request);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_GetAllSeat value) getAll,
+    required TResult Function(_GetSeat value) getSeat,
+    required TResult Function(_CreateReservation value) createReservation,
+    required TResult Function(_GetHistory value) getHistory,
+    required TResult Function(_RepeatLast value) repeatLast,
+    required TResult Function(_CancelReservation value) cancelReservation,
+  }) {
+    return cancelReservation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_GetAllSeat value)? getAll,
+    TResult? Function(_GetSeat value)? getSeat,
+    TResult? Function(_CreateReservation value)? createReservation,
+    TResult? Function(_GetHistory value)? getHistory,
+    TResult? Function(_RepeatLast value)? repeatLast,
+    TResult? Function(_CancelReservation value)? cancelReservation,
+  }) {
+    return cancelReservation?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_GetAllSeat value)? getAll,
+    TResult Function(_GetSeat value)? getSeat,
+    TResult Function(_CreateReservation value)? createReservation,
+    TResult Function(_GetHistory value)? getHistory,
+    TResult Function(_RepeatLast value)? repeatLast,
+    TResult Function(_CancelReservation value)? cancelReservation,
+    required TResult orElse(),
+  }) {
+    if (cancelReservation != null) {
+      return cancelReservation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CancelReservation implements SeatEvent {
+  const factory _CancelReservation(final CancelReservationRequest request) =
+      _$CancelReservationImpl;
+
+  CancelReservationRequest get request;
+
+  /// Create a copy of SeatEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CancelReservationImplCopyWith<_$CancelReservationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

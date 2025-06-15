@@ -14,7 +14,7 @@ _$GetHistoryEntityImpl _$$GetHistoryEntityImplFromJson(
       seat: SeatItemEntity.fromJson(json['seat'] as Map<String, dynamic>),
       startTime: DateTime.parse(json['startTime'] as String),
       endTime: DateTime.parse(json['endTime'] as String),
-      status: json['status'] as String,
+      status: _statusFromJson(json['status'] as String),
       floor: (json['floor'] as num).toInt(),
       date: json['date'] as String,
     );
@@ -27,7 +27,7 @@ Map<String, dynamic> _$$GetHistoryEntityImplToJson(
       'seat': instance.seat,
       'startTime': instance.startTime.toIso8601String(),
       'endTime': instance.endTime.toIso8601String(),
-      'status': instance.status,
+      'status': _statusToJson(instance.status),
       'floor': instance.floor,
       'date': instance.date,
     };

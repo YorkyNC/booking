@@ -1,4 +1,5 @@
 import 'package:booking/src/core/services/auth/models/user_entity.dart';
+import 'package:booking/src/features/history/domain/enum/booking_status.dart';
 import 'package:booking/src/features/seat/domain/entities/seat_item_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,13 +14,16 @@ class GetHistoryEntity with _$GetHistoryEntity {
     required SeatItemEntity seat,
     required DateTime startTime,
     required DateTime endTime,
-    required String status,
+    @JsonKey(fromJson: _statusFromJson, toJson: _statusToJson) required BookingStatus status,
     required int floor,
     required String date,
   }) = _GetHistoryEntity;
 
   factory GetHistoryEntity.fromJson(Map<String, dynamic> json) => _$GetHistoryEntityFromJson(json);
 }
+
+BookingStatus _statusFromJson(String status) => BookingStatus.fromString(status);
+String _statusToJson(BookingStatus status) => status.value;
 
 // CORRECTED: The JSON returns an array directly, not an object with "bookings" property
 @freezed

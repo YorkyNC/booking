@@ -4,7 +4,6 @@ import 'package:booking/src/app/imports.dart';
 import 'package:booking/src/core/extensions/build_context_extension.dart';
 import 'package:booking/src/core/router/router.dart';
 import 'package:booking/src/core/services/injectable/injectable_service.dart';
-import 'package:booking/src/features/history/domain/enum/booking_status.dart';
 import 'package:booking/src/features/history/domain/enum/requests/get_history_request.dart';
 import 'package:booking/src/features/history/presentation/bloc/history_bloc.dart';
 import 'package:booking/src/features/history/presentation/components/booking_card.dart';
@@ -358,18 +357,27 @@ class _StudentMainPageState extends State<StudentMainPage> {
                             if (history == null || history.isEmpty) {
                               return const SizedBox.shrink();
                             }
-                            final lastBooking = history.first;
+
+                            // Find the last active booking
+                            final lastActiveBooking = history.firstWhere(
+                              (booking) => booking.status.isActive,
+                              orElse: () => history.first, // Return first booking if no active ones found
+                            );
+
+                            // Only show if it's an active booking
+                            if (!lastActiveBooking.status.isActive) {
+                              return const SizedBox.shrink();
+                            }
+
                             return BookingCard(
-                              startTime: lastBooking.startTime,
-                              endTime: lastBooking.endTime,
-                              floor: lastBooking.floor.toString(),
-                              sector: lastBooking.seat.location,
-                              row: lastBooking.seat.number,
-                              place: lastBooking.seat.number,
-                              status: BookingStatus.values.firstWhere(
-                                (e) => e.toString().split('.').last == lastBooking.status,
-                                orElse: () => BookingStatus.ongoing,
-                              ),
+                              startTime: lastActiveBooking.startTime,
+                              endTime: lastActiveBooking.endTime,
+                              floor: lastActiveBooking.floor.toString(),
+                              sector: lastActiveBooking.seat.location,
+                              row: lastActiveBooking.seat.number,
+                              place: lastActiveBooking.seat.number,
+                              status: lastActiveBooking.status,
+                              showHeader: false,
                             );
                           },
                           orElse: () => const SizedBox.shrink(),

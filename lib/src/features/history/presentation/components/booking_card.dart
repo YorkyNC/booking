@@ -153,10 +153,7 @@ class BookingCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (onDelete != null &&
-                      (status == BookingStatus.ongoing ||
-                          status == BookingStatus.upcoming ||
-                          status == BookingStatus.cancelled))
+                  if (onDelete != null && (status == BookingStatus.ongoing || status == BookingStatus.upcoming))
                     GestureDetector(
                       onTap: onDelete,
                       child: Icon(
